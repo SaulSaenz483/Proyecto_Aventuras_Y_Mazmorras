@@ -15,8 +15,4 @@ add_executable(Proyecto_Aventuras_Y_Mazmorras main.cpp ${SOURCES}
         include/domain/Enemy.h
         src/domain/Enemy.cpp
         include/domain/NPC.h
-        src/domain/NPC.cpp
-        include/domain/Room.h
-        src/domain/Room.cpp
-        include/domain/DungeonLoader.h
-        src/domain/DungeonLoader.cpp)
+        src/domain/NPC.cpp)

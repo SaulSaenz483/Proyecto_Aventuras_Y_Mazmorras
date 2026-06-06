@@ -15,8 +15,8 @@ using namespace std;
     class Weapon: public Item {
     private:
         int attackBonus;
-        string damageType; // Slash, piercing, magic, throw, etc
-
+        string damageType; // Slash, piercing, magic, throw, etc. // Seria correcto eliminar el damageType para simplificar el sistema,
+                                                                  //  dejarlo como un unico tipo  de daño simplifica la tare
     public:
         Weapon(string n, string d, double w, string r, int atk, string dmgType);
 

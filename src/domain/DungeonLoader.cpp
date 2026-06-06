@@ -3,154 +3,250 @@
 //
 
 #include "domain/DungeonLoader.h"
+#include "domain/NPC.h"
 #include "domain/Weapon.h"
-#include"domain/Potion.h"
-#include "domain/Item.h"
+#include "domain/Potion.h"
 #include <fstream>
-#include <sstream> //Para leer linea por linea
-#include<iostream>
-
-#include "domain/Enemy.h"
+#include <sstream>
+#include <iostream>
 
 using namespace std;
 
-DungeonLoader::DungeonLoader() {}
+// ── helpers ────────────────────────────────────────────────────────────────
 
-void DungeonLoader::loadRooms(string filepath) {
-    ifstream file(filepath); //Para leer datos desde el archivo de texto
-    if (!file.is_open()) {
-        cout << "Error opening file" << filepath << "\n";
-        return;
-    }
-    string line;
-    while (getline(file, line)) {
-        if (line.empty())continue;
-
-        stringstream ss;
-        string id_str, name, desc;
-
-        //Cortamos usando el '|'
-
-        getline(ss, id_str, '|');
-        getline(ss, name, '|');
-        getline(ss, desc, '|');
-
-        //Ya que tenemos un id debemos convertirlo de entero a texto
-
-        int id = stoi(id_str); //Aqui logramos esa conversion necesaria
-
-        //Creamos el cuarto y lo guardamos en nuestro diccionario
-
-        dungeonMap[id] = new Room(name, desc);
-
-    }
-    file.close();
-    cout <<"-> Base rooms loaded.\n";
-
+string DungeonLoader::trim(const string& s) {
+    size_t start = s.find_first_not_of(" \t\r\n");
+    size_t end   = s.find_last_not_of(" \t\r\n");
+    if (start == string::npos) return "";
+    return s.substr(start, end - start + 1);
 }
 
-// Conectar las habitaciones
+CellType DungeonLoader::charToCell(char c) {
+    switch (c) {
+        case '#': return CellType::WALL;
+        case '.': return CellType::FLOOR;
+        case '@': return CellType::PLAYER;
+        case 'E': return CellType::ENEMY;
+        case 'B': return CellType::BOSS;
+        case 'N': return CellType::NPC;
+        case '$': return CellType::TREASURE;
+        default:  return CellType::FLOOR;
+    }
+}
 
-void DungeonLoader::connectRooms(string filepath) {
+// ── constructor / destructor ───────────────────────────────────────────────
+
+DungeonLoader::DungeonLoader()
+    : width(0), height(0), startX(1), startY(1), boss(nullptr) {}
+
+DungeonLoader::~DungeonLoader() {
+    for (Enemy* e : allEnemies) delete e;
+    for (NPC*   n : allNPCs)    delete n;
+    for (Item*  i : allItems)   delete i;
+}
+
+// ── acceso a la cuadricula ─────────────────────────────────────────────────
+
+bool DungeonLoader::isValid(int x, int y) const {
+    return x >= 0 && x < width && y >= 0 && y < height;
+}
+
+Room& DungeonLoader::getRoom(int x, int y) {
+    if (!isValid(x, y))
+        throw out_of_range("DungeonLoader::getRoom fuera de bounds (" +
+                           to_string(x) + "," + to_string(y) + ")");
+    return grid[y][x];
+}
+
+const Room& DungeonLoader::getRoom(int x, int y) const {
+    if (!isValid(x, y))
+        throw out_of_range("DungeonLoader::getRoom fuera de bounds (" +
+                           to_string(x) + "," + to_string(y) + ")");
+    return grid[y][x];
+}
+
+// ── loadMap ────────────────────────────────────────────────────────────────
+
+void DungeonLoader::loadMap(const string& filepath) {
     ifstream file(filepath);
-    string line;
-    while (getline(file, line)) {
-        if (line.empty())continue;
-        stringstream ss(line);
-        string id_str, name, desc,n_str,s_str,e_str,w_str;
+    if (!file.is_open())
+        throw runtime_error("DungeonLoader: no se puede abrir: " + filepath);
 
-        getline(ss, id_str, '|');
-        getline(ss, name, '|');
-        getline(ss, desc, '|');
-        getline(ss, n_str, '|');
-        getline(ss, s_str, '|');
-        getline(ss, e_str, '|');
+    string line;
+
+    // Linea 1: WIDTH|HEIGHT
+    if (!getline(file, line))
+        throw runtime_error("DungeonLoader: map.txt esta vacio");
+
+    {
+        stringstream ss(trim(line));
+        string w_str, h_str;
         getline(ss, w_str, '|');
-
-        int id = stoi(id_str);
-        int n = stoi(n_str);
-        int s = stoi(s_str);
-        int e = stoi(e_str);
-        int w = stoi(w_str);
-
-        Room* currentRoom = dungeonMap[id];
-
-        //Buscamos a los vecinos. SI es -1, significa que hay pared (nullptr)
-        Room* north = (n!=-1)?dungeonMap[n]:nullptr;
-        Room* east = (e!=-1)?dungeonMap[e]:nullptr;
-        Room* west = (w!=-1)?dungeonMap[w]:nullptr;
-        Room* south = (s!=-1)?dungeonMap[s]:nullptr;
-
-        currentRoom->setExits(north, south, east, west);
-
+        getline(ss, h_str, '|');
+        if (w_str.empty() || h_str.empty())
+            throw runtime_error("DungeonLoader: linea 1 debe ser WIDTH|HEIGHT");
+        width  = stoi(trim(w_str));
+        height = stoi(trim(h_str));
+        if (width <= 0 || height <= 0)
+            throw runtime_error("DungeonLoader: dimensiones invalidas en map.txt");
     }
-    file.close();
-    cout <<"-> Rooms connected.\n";
-}
-void DungeonLoader:: loadItems(string filepath) {
-    ifstream file(filepath);
-    string line;
-    while (getline(file, line)) {
-        if (line.empty())continue;
-        stringstream ss(line);
-        string type, roomId_str, name, desc, weight_str, rarity, stat_str, effect_str;
 
-        getline(ss, type, '|');
-        getline(ss, roomId_str, '|');
-        getline(ss, name, '|');
-        getline(ss, desc, '|');
-        getline(ss, weight_str, '|');
-        getline(ss, rarity, '|');
-        getline(ss, stat_str, '|');
-        getline(ss, effect_str, '|');
+    // Inicializar grid con celdas FLOOR
+    grid.assign(height, vector<Room>(width));
 
-        int roomId = stoi(roomId_str);
-        double weight = stod(weight_str);
-        int stat = stoi(stat_str);
+    // Leer filas del mapa
+    for (int row = 0; row < height; row++) {
+        if (!getline(file, line))
+            throw runtime_error("DungeonLoader: faltan filas en map.txt (fila " +
+                                to_string(row) + ")");
 
-        Item* newItem = nullptr;
-        if (type=="W") { //Es un arma
-            newItem = new Weapon(name, desc, weight, rarity, stat,effect_str);
-        } else if (type=="P") {
-            newItem = new Potion(name, desc, weight, rarity, stat,effect_str);
-        }
-        //Si el item se creo bien lo incluimos en el cuarto correspondiente
+        // Rellenar con '.' si la linea es mas corta que width
+        while ((int)line.size() < width) line += '.';
 
-        if (newItem!=nullptr && dungeonMap.count(roomId)) {
-            dungeonMap[roomId]->addItem(newItem);
+        for (int col = 0; col < width; col++) {
+            CellType ct = charToCell(line[col]);
+            grid[row][col].setType(ct);
+
+            // '@' marca la posicion de inicio del heroe
+            if (ct == CellType::PLAYER) {
+                startX = col;
+                startY = row;
+                grid[row][col].setType(CellType::FLOOR);
+            }
         }
     }
+
     file.close();
-    cout <<"-> Items over the dungeon.\n";
+    cout << "-> Mapa cargado (" << width << "x" << height << ").\n";
 }
 
-//Cargar los enemigos y ponerlos en sus cuartos
+// ── loadEnemies ────────────────────────────────────────────────────────────
 
-void DungeonLoader:: loadEnemies(string filepath) {
+void DungeonLoader::loadEnemies(const string& filepath) {
     ifstream file(filepath);
-    string line;
-    while (getline(file, line)) {
-        if (line.empty())continue;
-        stringstream ss(line);
-        string roomId_str, name, type, hp_str, dmg_str;
+    if (!file.is_open())
+        throw runtime_error("DungeonLoader: no se puede abrir: " + filepath);
 
-        getline(ss, roomId_str, '|');
-        getline(ss, name, '|');
-        getline(ss, type, '|');
-        getline(ss, hp_str, '|');
+    string line;
+    int lineNum = 0;
+
+    while (getline(file, line)) {
+        lineNum++;
+        line = trim(line);
+        if (line.empty() || line[0] == '#') continue;
+
+        stringstream ss(line);
+        string col_str, row_str, name, type, hp_str, dmg_str;
+
+        getline(ss, col_str, '|');
+        getline(ss, row_str, '|');
+        getline(ss, name,    '|');
+        getline(ss, type,    '|');
+        getline(ss, hp_str,  '|');
         getline(ss, dmg_str, '|');
 
-        int roomId = stoi(roomId_str);
-        int hp = stoi(hp_str);
-        int dmg = stoi(dmg_str);
+        if (col_str.empty() || row_str.empty() || name.empty())
+            throw runtime_error("DungeonLoader: linea invalida " +
+                                to_string(lineNum) + " en: " + filepath);
 
-        Enemy* newEnemy = new Enemy(name, type, hp, dmg);
+        int col = stoi(trim(col_str));
+        int row = stoi(trim(row_str));
+        int hp  = stoi(trim(hp_str));
+        int dmg = stoi(trim(dmg_str));
+        type    = trim(type);
 
-        if (dungeonMap.count(roomId)) {
-            dungeonMap[roomId]->addEntity(newEnemy);
+        if (!isValid(col, row))
+            throw runtime_error("DungeonLoader: posicion (" + to_string(col) +
+                                "," + to_string(row) + ") fuera de bounds en linea " +
+                                to_string(lineNum));
+
+        Enemy* e = new Enemy(trim(name), type, hp, dmg);
+        allEnemies.push_back(e);
+        grid[row][col].addEnemy(e);
+
+        if (type == "Boss") {
+            if (boss != nullptr)
+                throw runtime_error("DungeonLoader: solo puede haber un Boss.");
+            boss = e;
+            grid[row][col].setType(CellType::BOSS);
+        } else {
+            grid[row][col].setType(CellType::ENEMY);
         }
     }
+
     file.close();
-    cout << "-> Enemies located.\n";
+
+    if (boss == nullptr)
+        throw runtime_error("DungeonLoader: enemies.txt no tiene ningun Boss.\n"
+                            "  Agrega una linea con tipo 'Boss'.");
+
+    cout << "-> " << allEnemies.size() << " enemigos cargados (Boss: "
+         << boss->getName() << ").\n";
+}
+
+// ── loadItems ──────────────────────────────────────────────────────────────
+
+void DungeonLoader::loadItems(const string& filepath) {
+    ifstream file(filepath);
+    if (!file.is_open())
+        throw runtime_error("DungeonLoader: no se puede abrir: " + filepath);
+
+    string line;
+    int lineNum = 0;
+
+    while (getline(file, line)) {
+        lineNum++;
+        line = trim(line);
+        if (line.empty() || line[0] == '#') continue;
+
+        stringstream ss(line);
+        string type, col_str, row_str, name, desc, weight_str, rarity, stat_str, effect_str;
+
+        getline(ss, type,       '|');
+        getline(ss, col_str,    '|');
+        getline(ss, row_str,    '|');
+        getline(ss, name,       '|');
+        getline(ss, desc,       '|');
+        getline(ss, weight_str, '|');
+        getline(ss, rarity,     '|');
+        getline(ss, stat_str,   '|');
+        getline(ss, effect_str, '|');
+
+        if (type.empty() || col_str.empty() || name.empty())
+            throw runtime_error("DungeonLoader: linea invalida " +
+                                to_string(lineNum) + " en: " + filepath);
+
+        int    col    = stoi(trim(col_str));
+        int    row    = stoi(trim(row_str));
+        double weight = stod(trim(weight_str));
+        int    stat   = stoi(trim(stat_str));
+        type          = trim(type);
+
+        if (!isValid(col, row))
+            throw runtime_error("DungeonLoader: posicion (" + to_string(col) +
+                                "," + to_string(row) + ") fuera de bounds en linea " +
+                                to_string(lineNum));
+
+        Item* newItem = nullptr;
+
+        if (type == "W") {
+            newItem = new Weapon(trim(name), trim(desc), weight,
+                                 trim(rarity), stat, trim(effect_str));
+        } else if (type == "P") {
+            newItem = new Potion(trim(name), trim(desc), weight,
+                                 trim(rarity), stat, trim(effect_str));
+        } else {
+            cerr << "DungeonLoader: tipo desconocido '" << type
+                 << "' en linea " << lineNum << " — ignorado.\n";
+            continue;
+        }
+
+        allItems.push_back(newItem);
+        grid[row][col].addItem(newItem);
+        grid[row][col].setType(CellType::TREASURE);
+    }
+
+    file.close();
+    cout << "-> " << allItems.size() << " items cargados.\n";
 }
 

@@ -1,71 +1,51 @@
 //
-// Created by Daniel Castillo on 04/06/2026.
+// Created by sauls on 04/06/2026.
 //
 
 #include "domain/Room.h"
+#include "domain/Enemy.h"
+#include "domain/Item.h"
+#include <algorithm>
 
-Room::Room(string n, string des):name(n), description(des),north(nullptr),south(nullptr),east(nullptr),west(nullptr) {}
+Room::Room(CellType t, const string& desc)
+    : type(t), description(desc), visited(false) {}
 
-Room::~Room() {
-
-    //Liberamos la memoria de las items y entidades
-
-    for (Item* item: itemsInRoom) {
-
-        delete item;
-
+char Room::getSymbol() const {
+    switch (type) {
+        case CellType::FLOOR:    return '.';
+        case CellType::WALL:     return '#';
+        case CellType::PLAYER:   return '@';
+        case CellType::ENEMY:    return 'E';
+        case CellType::BOSS:     return 'B';
+        case CellType::NPC:      return 'N';
+        case CellType::TREASURE: return '$';
+        default:                 return '?';
     }
-
-    for (Entity* entity: entitiesInRoom) {
-        delete entity;
-    }
-    itemsInRoom.clear(); //La libreria los limpia de esta manera con clear
-    entitiesInRoom.clear();
 }
 
-//Conectar habitaciones
-
-void Room:: setExits(Room* n, Room* s, Room* e, Room* w ) {
-    north = n;
-    south = s;
-    east = e;
-    west = w;
+bool Room::hasLiveEnemies() const {
+    for (const Enemy* e : enemies)
+        if (e->isAlive()) return true;
+    return false;
 }
 
-//Agregar contenido, utilizamos el comando de la libreria
-void Room:: addItem(Item* item) {
-    itemsInRoom.push_back(item);
-}
-void Room:: addEntity(Entity* entity) {
-    entitiesInRoom.push_back(entity);
+bool Room::hasBoss() const {
+    for (const Enemy* e : enemies)
+        if (e->getEnemyType() == "Boss" && e->isAlive()) return true;
+    return false;
 }
 
-//Ver que hay alrededor
-void Room:: lookAround()const {
-    cout << "\n--- [" << name << "] ---\n";
-    cout << description << "\n";
-
-    cout <<"\nExits: ";
-    if (north) cout << "[North] ";
-    if (south) cout << "[South] ";
-    if (east) cout << "[East] ";
-    if (west) cout << "[West] ";
-    cout << "\n";
-
-    //Preguntamos y recorremos si hay entidades y Items en las habitaciones
-
-    if (!entitiesInRoom.empty()) {
-        cout << "\nYou see someone/something here:\n";
-        for (Entity* e: entitiesInRoom) {
-            cout << "- "<< e->getName() << "\n";
-        }
-    }
-
-    if (!itemsInRoom.empty()) {
-        cout << "\nItems on the floor:\n";
-        for (Item* item: itemsInRoom) {
-            cout << "- "<< item->getName() << "\n";
-        }
-    }
-    cout << "----------------------\n\n";
+void Room::removeDeadEnemies() {
+    enemies.erase(
+        remove_if(enemies.begin(), enemies.end(),
+                  [](const Enemy* e){ return !e->isAlive(); }),
+        enemies.end()
+    );
 }
+
+void Room::removeItem(Item* item) {
+    auto it = find(items.begin(), items.end(), item);
+    if (it != items.end())
+        items.erase(it);
+}
+

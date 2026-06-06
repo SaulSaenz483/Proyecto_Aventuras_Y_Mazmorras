@@ -15,7 +15,7 @@ Weapon::Weapon(string n, string d, double w, string r, int atk, string dmgType):
 //Implementacion del metodo using
 
 void Weapon:: use(Hero &target) {
-    cout << name << "has been equipped. Damage type: "<< damageType << "\n";
+    cout << name << " has been equipped. Damage type: "<< damageType << "\n";
 }
 
 void Weapon::getInfo() const {

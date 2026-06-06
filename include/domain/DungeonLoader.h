@@ -5,38 +5,56 @@
 #ifndef PROYECTO_AVENTURAS_Y_MAZMORRAS_DUNGEONLOADER_H
 #define PROYECTO_AVENTURAS_Y_MAZMORRAS_DUNGEONLOADER_H
 
-#include <string>
-#include<map> //Manejo de diccionario
 #include "domain/Room.h"
+#include "domain/Enemy.h"
+#include <vector>
+#include <string>
+#include <stdexcept>
 
 using namespace std;
 
 class DungeonLoader {
 private:
+    vector<vector<Room>> grid;  // grid[row][col]
+    int width;
+    int height;
+    int startX;
+    int startY;
 
-    //Un diccionario que guarda: [ID del cuarto]-> [Puntero al cuarto real]
+    Enemy* boss;               // condicion de victoria
 
-    map<int, Room*> dungeonMap;
+    // DungeonLoader es dueno de estos objetos
+    vector<Enemy*> allEnemies;
+    vector<NPC*>   allNPCs;
+    vector<Item*>  allItems;
+
+    static string    trim(const string& s);
+    static CellType  charToCell(char c);
 
 public:
     DungeonLoader();
-    ~DungeonLoader()=default;
+    ~DungeonLoader();
 
-    //Metodos para cargar cada archivo
+    DungeonLoader(const DungeonLoader&)            = delete;
+    DungeonLoader& operator=(const DungeonLoader&) = delete;
 
-    void loadRooms(string filepath);
-    void loadItems(string filepath);
-    void loadEnemies(string filepath);
+    // Cargar en este orden:
+    void loadMap     (const string& filepath);
+    void loadEnemies (const string& filepath);
+    void loadItems   (const string& filepath);
 
-    //Metodo para conectar las habitaciones
+    // Acceso a la cuadricula
+    Room&       getRoom(int x, int y);
+    const Room& getRoom(int x, int y) const;
+    bool        isValid(int x, int y) const;
 
-    void connectRooms(string filepath);
+    int getWidth()  const { return width;  }
+    int getHeight() const { return height; }
+    int getStartX() const { return startX; }
+    int getStartY() const { return startY; }
 
-    //Getter para devolver el mapa del juego
-
-    map<int, Room*> getDungeonMap()const{return dungeonMap;}
-
-
+    Enemy* getBoss() const { return boss; }
 };
+
 
 #endif //PROYECTO_AVENTURAS_Y_MAZMORRAS_DUNGEONLOADER_H

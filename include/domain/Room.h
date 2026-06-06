@@ -1,62 +1,74 @@
 //
-// Created by Daniel Castillo on 04/06/2026.
+// Created by sauls on 04/06/2026.
 //
 
 #ifndef PROYECTO_AVENTURAS_Y_MAZMORRAS_ROOM_H
 #define PROYECTO_AVENTURAS_Y_MAZMORRAS_ROOM_H
 
-#include <string>
 #include <vector>
-#include "domain\Item.h"
-#include "domain/Entity.h"
+#include <string>
+
+class Enemy;
+class NPC;
+class Item;
 
 using namespace std;
 
+// Cada tipo mapea a exactamente 1 caracter ASCII — ancho siempre 1
+enum class CellType {
+    FLOOR,      // '.'
+    WALL,       // '#'
+    PLAYER,     // '@'  (solo para render)
+    ENEMY,      // 'E'
+    BOSS,       // 'B'  <- jefe final, derrotarlo = victoria
+    NPC,        // 'N'
+    TREASURE    // '$'
+};
+
 class Room {
 private:
-    string name;
-    string description;
+    CellType       type;
+    string         description;
+    bool           visited;
 
-
-    //Punteros a otras habitaciones (nullptr significa que hay pared)
-
-    Room* north;
-    Room* south;
-    Room* east;
-    Room* west;
-
-    //Contenido de la habitacion, tendran que existir Items y Entities
-
-    vector<Item*> itemsInRoom;
-    vector<Entity*> entitiesInRoom;
+    // Punteros no propietarios — DungeonLoader es dueno
+    vector<Enemy*> enemies;
+    vector<NPC*>   npcs;
+    vector<Item*>  items;
 
 public:
-    Room(string n, string des);
-    ~Room(); //Para limpiar memoria si la habitacion se destruye
+    explicit Room(CellType t = CellType::FLOOR, const string& desc = "");
 
-    //Conectar habitaciones
+    // --- Tipo y render ---
+    CellType      getType()         const { return type; }
+    void          setType(CellType t)     { type = t; }
+    char          getSymbol()       const;
+    bool          isWalkable()      const { return type != CellType::WALL; }
 
-    void setExits(Room* n, Room* s, Room* e, Room* w );
+    // --- Descripcion ---
+    const string& getDescription()  const { return description; }
+    void          setDescription(const string& d) { description = d; }
 
-    //Agregar contenido
-    void addItem(Item* item);
-    void addEntity(Entity* entity);
+    // --- Visitado (para el reporte final) ---
+    bool isVisited()  const { return visited; }
+    void markVisited()      { visited = true; }
 
-    //Ver que hay alrededor
-    void lookAround()const;
+    // --- Entidades ---
+    void addEnemy(Enemy* e) { enemies.push_back(e); }
+    void addNPC(NPC* n)     { npcs.push_back(n); }
+    void addItem(Item* i)   { items.push_back(i); }
 
-    //Getters de salidas para movilizarnos
+    const vector<Enemy*>& getEnemies() const { return enemies; }
+    const vector<NPC*>&   getNPCs()    const { return npcs; }
+    const vector<Item*>&  getItems()   const { return items; }
 
-    Room* getNorth()const{return north;}
-    Room* getSouth()const{return south;}
-    Room* getEast()const{return east;}
-    Room* getWest()const{return west;}
-    string getName()const{return name;}
+    bool hasLiveEnemies() const;
+    bool hasBoss()        const;
+    bool hasNPCs()        const { return !npcs.empty(); }
+    bool hasItems()       const { return !items.empty(); }
 
-
-
-
-
+    void removeDeadEnemies();
+    void removeItem(Item* item);
 };
 
 

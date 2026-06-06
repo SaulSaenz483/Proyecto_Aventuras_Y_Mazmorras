@@ -3,7 +3,6 @@
 //
 #include"domain/NPC.h"
 #include "iostream"
-#
 using namespace std;
 
 
