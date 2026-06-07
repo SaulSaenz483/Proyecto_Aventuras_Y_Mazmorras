@@ -1,0 +1,3 @@
+# col|row|nombre|tipo|hp|damage
+4|4|Grimfang|Goblin|30|6
+16|1|Malachar|Boss|120|20

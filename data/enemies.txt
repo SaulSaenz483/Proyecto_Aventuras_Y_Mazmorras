@@ -1,3 +1,0 @@
-2|Cerberus|Guardian|30|5
-3|Beowulf|Demon dog|100|25
-4|Nelo Angelo|Voltaic Black Knight|50|12

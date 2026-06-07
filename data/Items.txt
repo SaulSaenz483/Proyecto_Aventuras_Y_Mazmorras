@@ -1,0 +1,3 @@
+# tipo|col|row|nombre|descripcion|peso|rareza|stat|efecto
+W|18|6|Espada Larga|Hoja de acero antiguo|3.5|Rare|12|Slash
+P|10|4|Pocion Roja|Restaura vida|0.3|Common|30|Heal

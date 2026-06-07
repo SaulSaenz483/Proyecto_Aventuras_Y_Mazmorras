@@ -16,3 +16,13 @@ add_executable(Proyecto_Aventuras_Y_Mazmorras main.cpp ${SOURCES}
         src/domain/Enemy.cpp
         include/domain/NPC.h
         src/domain/NPC.cpp)
+
+# Copia automatica de data/ al directorio de build en cada compilacion.
+# Funciona en cualquier equipo sin configuracion manual.
+add_custom_command(
+        TARGET Proyecto_Aventuras_Y_Mazmorras POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/data
+        $<TARGET_FILE_DIR:Proyecto_Aventuras_Y_Mazmorras>/data
+        COMMENT "Copiando archivos de datos al directorio de build..."
+)

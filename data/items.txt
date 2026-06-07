@@ -1,3 +1,0 @@
-W|1|Rusty Sword|A old sword, it still can be used.|3.5|Common|5|Sharp
-P|2|Minor Potion|A bottle with a glowy red liquid.|0.5|Commoin|20|Healing
-W|4|Battle axe|A sharp axe.|6.0|Rare|15|Dangerous

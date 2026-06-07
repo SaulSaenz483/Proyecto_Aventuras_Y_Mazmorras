@@ -1,4 +1,0 @@
-1|Entrance to the tower Temen Nigru|A horrible tower. La luz de la luna apenas entra.|2|-1|-1|-1
-2|Hallway of the Skulls|A big hallway full of skeletons.|3|1|4|-1
-3|Chamber of the Forgotten brother|A circular chamber with a throne.|-1|2|-1|-1
-4|Abandoned hall of weapons|There are used and rusty weapons that cannot be used anymore.|-1|-1|-1|2

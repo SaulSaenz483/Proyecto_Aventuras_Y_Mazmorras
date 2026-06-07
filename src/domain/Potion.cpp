@@ -2,7 +2,7 @@
 // Created by Daniel Castillo on 31/05/2026.
 //
 
-#include "domain\Potion.h"
+#include "domain/Potion.h"
 
 Potion::Potion(string n, string desc, double w, string r, int val, string type):Item(n,desc,w,r),effectValue(val),effectType(type){}
 
