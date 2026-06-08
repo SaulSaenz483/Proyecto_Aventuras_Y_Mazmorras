@@ -8,9 +8,7 @@ using namespace std;
 
 NPC::NPC(string n, string dial):Entity(n),dialogue(dial) {}
 
-void NPC:: interact() {
-
-    cout << "Nice to meet you hero! My name is: "<<name<<"\n";
-    cout << dialogue << "\n";
-
+void NPC::interact() {
+    cout << "  | " << name << "\n";
+    cout << "  " << dialogue << "\n";
 }

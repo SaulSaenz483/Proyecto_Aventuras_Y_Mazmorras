@@ -39,7 +39,12 @@ int main() {
 
 
     // ── Create hero ───────────────────────────────────────────────────────
-    Hero hero("Aldric", 100, 18);
+    cout << "  Enter your hero's name: ";
+    string heroName;
+    getline(cin, heroName);
+    if (heroName.empty()) heroName = "Aldric";  // nombre por defecto
+
+    Hero hero(heroName, 100, 18);
  
     // ── Start logger ──────────────────────────────────────────────────────
     Logger* logger = nullptr;

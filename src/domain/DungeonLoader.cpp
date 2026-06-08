@@ -24,13 +24,8 @@ string DungeonLoader::trim(const string& s) {
 CellType DungeonLoader::charToCell(char c) {
     switch (c) {
         case '#': return CellType::WALL;
-        case '.': return CellType::FLOOR;
         case '@': return CellType::PLAYER;
-        case 'E': return CellType::ENEMY;
-        case 'B': return CellType::BOSS;
-        case 'N': return CellType::NPC;
-        case '$': return CellType::TREASURE;
-        default:  return CellType::FLOOR;
+        default:  return CellType::FLOOR; // E, B, N, $ se ignoran — los cargan los loaders
     }
 }
 

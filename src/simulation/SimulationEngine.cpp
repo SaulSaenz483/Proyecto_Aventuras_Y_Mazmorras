@@ -162,10 +162,7 @@ void SimulationEngine::handleEnemies(Room& room) {
             heroY -= lastDy;
             logger.log(hero.getName() + " fled and stepped back.");
             return;
-        } else {
-            logger.log(hero.getName()+ "fled but had nowhere to go.");
         }
-        return;
     }
 
     room.removeDeadEnemies();
@@ -179,9 +176,8 @@ void SimulationEngine::handleNPCs(Room& room) {
     for (NPC* n : room.getNPCs()) {
         clearScreen();
         cout << "\n  +---------------------------------+\n";
-        cout << "  | " << padRight(n->getName(), 31) << "  |\n";
-        cout << "  +---------------------------------+\n";
-        cout << "  " << n->getDialogue() << "\n\n";
+        n->interact();   // polimorfismo real — NPC imprime su propio dialogo
+        cout << "  +---------------------------------+\n\n";
         cout << "  Press ENTER to continue...";
         cin.get();
         logger.log("NPC encountered: " + n->getName());
