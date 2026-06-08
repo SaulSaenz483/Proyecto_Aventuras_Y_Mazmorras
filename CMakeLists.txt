@@ -15,7 +15,15 @@ add_executable(Proyecto_Aventuras_Y_Mazmorras main.cpp ${SOURCES}
         include/domain/Enemy.h
         src/domain/Enemy.cpp
         include/domain/NPC.h
-        src/domain/NPC.cpp)
+        src/domain/NPC.cpp
+        include/output/Logger.h
+        src/output/Logger.cpp
+        include/simulation/CombatSystem.h
+        src/simulation/CombatSystem.cpp
+        include/simulation/SimulationEngine.h
+        src/simulation/SimulationEngine.cpp
+        include/output/ReportGenerator.h
+        src/output/ReportGenerator.cpp)
 
 # Copia automatica de data/ al directorio de build en cada compilacion.
 # Funciona en cualquier equipo sin configuracion manual.

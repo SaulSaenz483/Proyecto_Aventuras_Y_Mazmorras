@@ -5,11 +5,9 @@
 #ifndef PROYECTO_AVENTURAS_Y_MAZMORRAS_HERO_H
 #define PROYECTO_AVENTURAS_Y_MAZMORRAS_HERO_H
 
-//Incluiremos <vector> para un mejor manejo de Item que ya posee polimorfismo
-
 #include "domain/Entity.h"
 #include "domain/Item.h"
-#include<vector>
+#include <vector>
 #include <string>
 
 using namespace std;
@@ -17,28 +15,29 @@ using namespace std;
 class Hero: public Entity {
 private:
     int hp;
+    int maxHp;        // necesario para la barra de HP en la interfaz
     int baseAttack;
-    vector<Item*> inventory; //Un arreglo dinamico de punteros a la clase Item
+    vector<Item*> inventory;
 
 public:
     Hero(string n, int health, int attack);
-    ~Hero()override;
+    ~Hero() override;
 
-    //Sobreescribimos el metodo virtual puro de Entity
     void interact() override;
 
-    //Acciones propias del heroe
+    // Acciones
     void takeDamage(int amount);
+    void heal(int amount);        // usado por Potion en combate
     void addItem(Item* item);
     void showInventory() const;
 
-    //Getters
-    int getHp() const{return hp;}
-    int getBaseAttack() const{return baseAttack;}
+    // Getters
+    int  getHp()           const { return hp; }
+    int  getMaxHp()        const { return maxHp; }
+    int  getBaseAttack()   const { return baseAttack; }
+    bool isAlive()         const { return hp > 0; }
 
-
-
-
+    const vector<Item*>& getInventory() const { return inventory; }
 };
 
 #endif //PROYECTO_AVENTURAS_Y_MAZMORRAS_HERO_H
