@@ -14,6 +14,7 @@ class Enemy: public Entity {
 private:
     string enemyType;
     int hp;
+    int maxHp;
     int damage;
 
 public:
@@ -27,6 +28,7 @@ public:
 
     //Getters
     int getHp() const { return hp; }
+    int getMaxHp() const { return maxHp; }
     int getDamage() const { return damage; }
     string getEnemyType() const { return enemyType; }
 

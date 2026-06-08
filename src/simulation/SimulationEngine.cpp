@@ -5,6 +5,8 @@
 #include "simulation/SimulationEngine.h"
 #include "simulation/CombatSystem.h"
 #include "domain/NPC.h"
+#include "domain/Weapon.h"
+#include "domain/Potion.h"
 #include <iostream>
 #include <limits>
 #include <cstdlib>
@@ -90,7 +92,10 @@ void SimulationEngine::drawMap() const {
 
         string side;
         if (row == 0) {
-            side = "ATK " + to_string(hero.getBaseAttack());
+            string atkStr = "ATK " + to_string(hero.getBaseAttack());
+            if (hero.getWeaponBonus() > 0)
+                atkStr += " (+" + to_string(hero.getWeaponBonus()) + " weapon)";
+            side = atkStr;
         } else if (row == 1) {
             side = "--- Inventory ---";
         } else {
@@ -186,7 +191,15 @@ void SimulationEngine::handleItems(Room& room) {
     for (Item* item : items) {
         hero.addItem(item);
         room.removeItem(item);
-        logger.log("Item picked up: " + item->getName());
+
+        // Las armas se equipan automáticamente al recogerlas
+        if (dynamic_cast<Weapon*>(item)) {
+            item->use(hero);
+            logger.log("Weapon equipped: " + item->getName() +
+                       " (ATK now " + to_string(hero.getBaseAttack()) + ")");
+        } else {
+            logger.log("Item picked up: " + item->getName());
+        }
     }
     if (!room.hasItems() && !room.hasLiveEnemies() && !room.hasNPCs())
         room.setType(CellType::FLOOR);

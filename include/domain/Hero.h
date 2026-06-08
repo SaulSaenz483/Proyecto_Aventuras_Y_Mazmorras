@@ -15,8 +15,9 @@ using namespace std;
 class Hero: public Entity {
 private:
     int hp;
-    int maxHp;        // necesario para la barra de HP en la interfaz
+    int maxHp;
     int baseAttack;
+    int weaponBonus;
     vector<Item*> inventory;
 
 public:
@@ -27,14 +28,17 @@ public:
 
     // Acciones
     void takeDamage(int amount);
-    void heal(int amount);        // usado por Potion en combate
+    void heal(int amount);
+    void equipWeapon(int bonus);
     void addItem(Item* item);
     void showInventory() const;
 
     // Getters
     int  getHp()           const { return hp; }
     int  getMaxHp()        const { return maxHp; }
-    int  getBaseAttack()   const { return baseAttack; }
+    int  getBaseAttack()   const { return baseAttack + weaponBonus; }
+    int  getRawAttack()    const {return baseAttack; }
+    int  getWeaponBonus()  const {return weaponBonus; }
     bool isAlive()         const { return hp > 0; }
 
     const vector<Item*>& getInventory() const { return inventory; }

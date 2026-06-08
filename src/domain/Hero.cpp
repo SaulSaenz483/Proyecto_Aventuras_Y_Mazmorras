@@ -8,7 +8,7 @@
 using namespace std;
 
 Hero::Hero(string n, int health, int attack)
-    : Entity(n), hp(health), maxHp(health), baseAttack(attack) {}
+    : Entity(n), hp(health), maxHp(health), baseAttack(attack), weaponBonus(0) {}
 
 Hero::~Hero() {
     for (Item* item : inventory)
@@ -30,6 +30,11 @@ void Hero::heal(int amount) {
     hp += amount;
     if (hp > maxHp) hp = maxHp;
     cout << name << " recovered " << amount << " HP. Current HP: " << hp << "\n";
+}
+
+void Hero::equipWeapon(int bonus) {
+    weaponBonus = bonus;
+    cout << name << " equipped a weapon! ATK is now " << (baseAttack + weaponBonus) << "\n";
 }
 
 void Hero::addItem(Item* item) {

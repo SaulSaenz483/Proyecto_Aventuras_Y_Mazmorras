@@ -15,7 +15,8 @@ using namespace std;
 enum class CombatResult {
     HERO_WON,   // el enemigo murio
     HERO_DIED,  // el heroe murio
-    HERO_FLED   // el heroe huyo (enemigo sigue vivo)
+    HERO_FLED,   // el heroe huyo (enemigo sigue vivo)
+    CONTINUE    // turno terminó, combate sigue
 };
 
 class CombatSystem {

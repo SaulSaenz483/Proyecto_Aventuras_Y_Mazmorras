@@ -42,6 +42,7 @@ public:
     void loadMap     (const string& filepath);
     void loadEnemies (const string& filepath);
     void loadItems   (const string& filepath);
+    void loadNPCs    (const string& filepath);
 
     // Acceso a la cuadricula
     Room&       getRoom(int x, int y);

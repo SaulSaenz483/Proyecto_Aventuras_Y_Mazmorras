@@ -7,7 +7,7 @@
 
 using namespace std;
 
-Enemy::Enemy(string n, string type, int health, int dam):Entity(n),enemyType(type),hp(health),damage(dam){}
+Enemy::Enemy(string n, string type, int health, int dam):Entity(n),enemyType(type),hp(health),maxHp(health),damage(dam){}
 
 void Enemy:: interact() {
     if (hp > 0) {

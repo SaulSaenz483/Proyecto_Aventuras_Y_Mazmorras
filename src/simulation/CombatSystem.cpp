@@ -70,8 +70,8 @@ void CombatSystem::drawCombatScreen() const {
     // Barras de HP
     string heroBar  = "HP [" + hpBar(hero.getHp(),  hero.getMaxHp()) + "] " +
                       to_string(hero.getHp()) + "/" + to_string(hero.getMaxHp());
-    string enemyBar = "HP [" + hpBar(enemy.getHp(), enemy.getHp() + 1) + "] " +
-                      to_string(enemy.getHp());
+    string enemyBar = "HP [" + hpBar(enemy.getHp(), enemy.getMaxHp()) + "] " +
+                          to_string(enemy.getHp()) + "/" + to_string(enemy.getMaxHp());
     splitRow(heroBar, enemyBar);
 
     // Stats
@@ -117,7 +117,7 @@ CombatResult CombatSystem::attack() {
     }
 
     if (enemyTurn()) return CombatResult::HERO_DIED;
-    return CombatResult::HERO_WON; // placeholder — bucle continua
+    return CombatResult::CONTINUE;
 }
 
 // ── useItem ────────────────────────────────────────────────────────────────
@@ -134,16 +134,16 @@ CombatResult CombatSystem::useItem() {
 
             // El enemigo igual contraataca este turno
             if (enemyTurn()) return CombatResult::HERO_DIED;
-            return CombatResult::HERO_WON; // placeholder — bucle continua
+            return CombatResult::CONTINUE; // combate sigue
         }
     }
 
     // No habia pocion
     cout << "  You have no potions available.\n";
-    logger.log("An attempt was made to use the item, but there were no potions..");
+    logger.log("Tried to use an item but no potions were available.");
 
     if (enemyTurn()) return CombatResult::HERO_DIED;
-    return CombatResult::HERO_WON; // placeholder — bucle continua
+    return CombatResult::CONTINUE; // combate sigue
 }
 
 // ── flee ───────────────────────────────────────────────────────────────────
@@ -166,10 +166,17 @@ CombatResult CombatSystem::start() {
     while (hero.isAlive() && enemy.isAlive()) {
         drawCombatScreen();
 
-        int choice = 0;
+        string line;
         cout << "\n> ";
-        cin  >> choice;
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout.flush();
+        if (!getline(cin, line)) break;
+
+        int choice = 0;
+        try {
+            if (!line.empty()) choice = stoi(line);
+        } catch (...) {
+            choice = 0;
+        }
 
         CombatResult result;
 
@@ -185,8 +192,8 @@ CombatResult CombatSystem::start() {
         logger.nextTurn();
 
         // Si el enemigo murio o huimos o morimos, salimos del bucle
-        if (!enemy.isAlive()) return CombatResult::HERO_WON;
-        if (!hero.isAlive())  return CombatResult::HERO_DIED;
+        if (!enemy.isAlive())                  return CombatResult::HERO_WON;
+        if (!hero.isAlive())                   return CombatResult::HERO_DIED;
         if (result == CombatResult::HERO_FLED) return CombatResult::HERO_FLED;
     }
 

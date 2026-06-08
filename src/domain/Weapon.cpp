@@ -5,7 +5,7 @@
 //Conectamos con su archivo de cabecera
 
 #include "domain/Weapon.h"
-
+#include "domain/Hero.h"
 #include<iostream>
 
 using namespace std;
@@ -14,8 +14,9 @@ Weapon::Weapon(string n, string d, double w, string r, int atk, string dmgType):
 
 //Implementacion del metodo using
 
-void Weapon:: use(Hero &target) {
-    cout << name << " has been equipped. Damage type: "<< damageType << "\n";
+void Weapon::use(Hero& target) {
+    target.equipWeapon(attackBonus);
+    cout << name << " equipped! +" << attackBonus << " ATK (" << damageType << ")\n";
 }
 
 void Weapon::getInfo() const {

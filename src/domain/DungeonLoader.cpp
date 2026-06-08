@@ -250,3 +250,44 @@ void DungeonLoader::loadItems(const string& filepath) {
     cout << "-> " << allItems.size() << " loaded items.\n";
 }
 
+void DungeonLoader::loadNPCs(const string& filepath) {
+    ifstream file(filepath);
+    if (!file.is_open())
+        throw runtime_error("DungeonLoader: Cannot open: " + filepath);
+
+    string line;
+    int lineNum = 0;
+
+    while (getline(file, line)) {
+        lineNum++;
+        line = trim(line);
+        if (line.empty() || line[0] == '#') continue;
+
+        stringstream ss(line);
+        string col_str, row_str, name, dialogue;
+
+        getline(ss, col_str,  '|');
+        getline(ss, row_str,  '|');
+        getline(ss, name,     '|');
+        getline(ss, dialogue, '|');
+
+        if (col_str.empty() || row_str.empty() || name.empty() || dialogue.empty())
+            throw runtime_error("DungeonLoader: invalid line " +
+                                to_string(lineNum) + " in: " + filepath);
+
+        int col = stoi(trim(col_str));
+        int row = stoi(trim(row_str));
+
+        if (!isValid(col, row))
+            throw runtime_error("DungeonLoader: NPC position out of bounds at line " +
+                                to_string(lineNum));
+
+        NPC* n = new NPC(trim(name), trim(dialogue));
+        allNPCs.push_back(n);
+        grid[row][col].addNPC(n);
+        grid[row][col].setType(CellType::NPC);
+    }
+
+    file.close();
+    cout << "-> " << allNPCs.size() << " loaded NPCs.\n";
+}
