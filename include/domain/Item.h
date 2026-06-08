@@ -7,7 +7,7 @@
 
 #include <string>
 #include <iostream>
-using namespace std;
+
 
 //Forward declaration para evitar dependencias circulares
 
@@ -16,13 +16,13 @@ class Hero;
 class Item {
 
 protected:
-    string name;
-   string description;
+    std::string name;
+   std::string description;
     double weight;
-    string rarity;
+    std::string rarity;
 
 public:
-    Item(string n,string d, double w, string r):name(n), description(d), weight(w), rarity(r) {}
+    Item(std::string n,std::string d, double w, std::string r):name(n), description(d), weight(w), rarity(r) {}
 
     virtual ~Item() = default; //Destructor virtual esencial para herencia polimorfica
 
@@ -33,7 +33,7 @@ public:
         std::cout << "[" << rarity << "] " << name << ": " << description << " (" << weight << "kg)\n";
     }
     //Getters y setters irian aca, de momento no los he implementado
-    string getName() const{return name;}
+    std::string getName() const{return name;}
 
 
 };

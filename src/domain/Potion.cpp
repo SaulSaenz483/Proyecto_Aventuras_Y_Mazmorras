@@ -4,7 +4,10 @@
 
 #include "domain/Potion.h"
 #include "domain/Hero.h"
+#include<string>
 #include <iostream>
+
+using namespace std;
 
 Potion::Potion(string n, string desc, double w, string r, int val, string type):Item(n,desc,w,r),effectValue(val),effectType(type){}
 

@@ -11,11 +11,12 @@
 #include <string>
 #include <stdexcept>
 
-using namespace std;
+
 
 class DungeonLoader {
 private:
-    vector<vector<Room>> grid;  // grid[row][col]
+
+    std::vector<std::vector<Room>> grid;  // grid[row][col]
     int width;
     int height;
     int startX;
@@ -24,11 +25,11 @@ private:
     Enemy* boss;               // condicion de victoria
 
     // DungeonLoader es dueno de estos objetos
-    vector<Enemy*> allEnemies;
-    vector<NPC*>   allNPCs;
-    vector<Item*>  allItems;
+    std::vector<Enemy*> allEnemies;
+    std::vector<NPC*>   allNPCs;
+    std::vector<Item*>  allItems;
 
-    static string    trim(const string& s);
+    static std::string    trim(const std::string& s);
     static CellType  charToCell(char c);
 
 public:
@@ -39,10 +40,10 @@ public:
     DungeonLoader& operator=(const DungeonLoader&) = delete;
 
     // Cargar en este orden:
-    void loadMap     (const string& filepath);
-    void loadEnemies (const string& filepath);
-    void loadItems   (const string& filepath);
-    void loadNPCs    (const string& filepath);
+    void loadMap     (const std::string& filepath);
+    void loadEnemies (const std::string& filepath);
+    void loadItems   (const std::string& filepath);
+    void loadNPCs    (const std::string& filepath);
 
     // Acceso a la cuadricula
     Room&       getRoom(int x, int y);

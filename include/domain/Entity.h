@@ -6,19 +6,19 @@
 #define PROYECTO_AVENTURAS_Y_MAZMORRAS_ENTITY_H
 
 #include<string>
-using namespace std;
+
 
 class Entity {
 protected:
-    string name;
+    std::string name;
 
 public:
-    Entity(string n): name(n) {}
+    Entity(std::string n): name(n) {}
     virtual ~Entity()=default;
 
     //Metodo virtual puro para el polimorfismo
     virtual void interact()=0;
-    string getName()const {return name;}
+    std::string getName()const {return name;}
     
 };
 

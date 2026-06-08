@@ -18,7 +18,7 @@
 #include "domain/Enemy.h"
 #include "output/Logger.h"
 
-using namespace std;
+
 
 enum class GameResult {
     VICTORY,
@@ -43,8 +43,8 @@ private:
     void drawDefeat()  const;
 
     // Helpers
-    static string hpBar   (int current, int max, int width = 10);
-    static string padRight(const string& s, int width);
+    static std::string hpBar   (int current, int max, int width = 10);
+    static std::string padRight(const std::string& s, int width);
     static void   clearScreen();
 
     // Logica

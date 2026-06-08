@@ -33,7 +33,8 @@ void ReportGenerator::generate(const Hero&          hero,
     file << "  Name     : " << hero.getName()       << "\n";
     file << "  HP final   : " << hero.getHp()
          << " / "             << hero.getMaxHp()      << "\n";
-    file << "  ATK base   : " << hero.getBaseAttack() << "\n";
+    file <<" ATK base      : " << hero.getRawAttack()<<"\n";
+    file <<" ATK total      : " << hero.getBaseAttack()<<"\n";
 
     const auto& inv = hero.getInventory();
     file << "  Inventory : " << inv.size() << " item(s)\n";

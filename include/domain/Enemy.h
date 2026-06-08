@@ -8,17 +8,17 @@
 #include "domain/Entity.h"
 #include <string>
 
-using namespace std;
+
 
 class Enemy: public Entity {
 private:
-    string enemyType;
+    std::string enemyType;
     int hp;
     int maxHp;
     int damage;
 
 public:
-    Enemy(string n, string type, int health, int dam);
+    Enemy(std::string n, std::string type, int health, int dam);
     ~Enemy() override = default;
 
 
@@ -30,7 +30,7 @@ public:
     int getHp() const { return hp; }
     int getMaxHp() const { return maxHp; }
     int getDamage() const { return damage; }
-    string getEnemyType() const { return enemyType; }
+    std::string getEnemyType() const { return enemyType; }
 
     bool isAlive() const { return hp > 0; }
 

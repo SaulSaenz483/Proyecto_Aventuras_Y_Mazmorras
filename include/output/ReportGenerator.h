@@ -10,7 +10,7 @@
 #include "simulation/SimulationEngine.h"
 #include <string>
 
-using namespace std;
+
 
 class ReportGenerator {
 public:
@@ -20,7 +20,7 @@ public:
                          const DungeonLoader& dungeon,
                          GameResult       result,
                          int              totalTurns,
-                         const string&    outputPath);
+                         const std::string&    outputPath);
 };
 
 #endif //PROYECTO_AVENTURAS_Y_MAZMORRAS_REPORTGENERATOR_H

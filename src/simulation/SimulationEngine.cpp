@@ -162,7 +162,10 @@ void SimulationEngine::handleEnemies(Room& room) {
             heroY -= lastDy;
             logger.log(hero.getName() + " fled and stepped back.");
             return;
+        } else {
+            logger.log(hero.getName()+ "fled but had nowhere to go.");
         }
+        return;
     }
 
     room.removeDeadEnemies();

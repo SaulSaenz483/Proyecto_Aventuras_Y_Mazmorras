@@ -8,17 +8,17 @@
 #include "domain/Item.h"
 #include <string>
 
-using namespace std;
+
 
 //Weapon hereda de Item
 
     class Weapon: public Item {
     private:
         int attackBonus;
-        string damageType; // Slash, piercing, magic, throw, etc. // Seria correcto eliminar el damageType para simplificar el sistema,
+        std::string damageType; // Slash, piercing, magic, throw, etc. // Seria correcto eliminar el damageType para simplificar el sistema,
                                                                   //  dejarlo como un unico tipo  de daño simplifica la tare
     public:
-        Weapon(string n, string d, double w, string r, int atk, string dmgType);
+        Weapon(std::string n, std::string d, double w, std::string r, int atk, std::string dmgType);
 
         //Destructor (usamos override porque el de su padre es virtual)
 
@@ -31,7 +31,7 @@ using namespace std;
         void getInfo() const override; //Para incluir la informacion adicional de Weapon
 
         int getAttackBonus()const{return attackBonus;}
-        string getDamageType()const{return damageType;}
+        std::string getDamageType()const{return damageType;}
 
 
     };

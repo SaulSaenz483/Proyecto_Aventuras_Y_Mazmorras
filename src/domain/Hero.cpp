@@ -3,6 +3,7 @@
 //
 
 #include "domain/Hero.h"
+#include <algorithm>
 #include <iostream>
 
 using namespace std;
@@ -53,5 +54,12 @@ void Hero::showInventory() const {
         inventory[i]->getInfo();
     }
     cout << "========================\n\n";
+}
+
+void Hero::removeItem(Item* item) {
+    auto it = find(inventory.begin(), inventory.end(), item);
+    if (it != inventory.end()) {
+        inventory.erase(it);
+    }
 }
 
