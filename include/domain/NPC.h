@@ -9,17 +9,17 @@
 #include"domain/Entity.h"
 #include <iostream>
 #include<string>
-using namespace std;
+
 
 class NPC:public Entity {
 private:
-    string dialogue;
+    std::string dialogue;
 public:
-    NPC(string n, string dial);
+    NPC(std::string n, std::string dial);
     ~NPC() override = default;
 
     void interact() override;
-    string getDialogue()const{return dialogue;}
+    std::string getDialogue()const{return dialogue;}
 };
 
 #endif //PROYECTO_AVENTURAS_Y_MAZMORRAS_NPC_H

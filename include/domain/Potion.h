@@ -8,17 +8,17 @@
 #include "domain/Item.h"
 #include <string>
 
-using namespace std;
+
 
 class Potion:public Item {
 
 private:
 
     int effectValue; //Cuanto cura o cuanta fuerza da
-    string effectType; // Heal , buff
+    std::string effectType; // Heal , buff
 
 public:
-    Potion(string n, string desc, double w, string r, int val, string type);
+    Potion(std::string n, std::string desc, double w, std::string r, int val, std::string type);
     ~Potion() override = default;
 
     void use(Hero& target) override;
@@ -26,7 +26,7 @@ public:
 
     //Getters
     int getEffectValue() const{return effectValue;}
-    string getEffectType() const{return effectType;}
+    std::string getEffectType() const{return effectType;}
 
 
 

@@ -12,7 +12,7 @@ class Enemy;
 class NPC;
 class Item;
 
-using namespace std;
+
 
 // Cada tipo mapea a exactamente 1 caracter ASCII — ancho siempre 1
 enum class CellType {
@@ -28,16 +28,16 @@ enum class CellType {
 class Room {
 private:
     CellType       type;
-    string         description;
+    std::string         description;
     bool           visited;
 
     // Punteros no propietarios — DungeonLoader es dueno
-    vector<Enemy*> enemies;
-    vector<NPC*>   npcs;
-    vector<Item*>  items;
+    std::vector<Enemy*> enemies;
+    std::vector<NPC*>   npcs;
+    std::vector<Item*>  items;
 
 public:
-    explicit Room(CellType t = CellType::FLOOR, const string& desc = "");
+    explicit Room(CellType t = CellType::FLOOR, const std::string& desc = "");
 
     // --- Tipo y render ---
     CellType      getType()         const { return type; }
@@ -46,8 +46,8 @@ public:
     bool          isWalkable()      const { return type != CellType::WALL; }
 
     // --- Descripcion ---
-    const string& getDescription()  const { return description; }
-    void          setDescription(const string& d) { description = d; }
+    const std::string& getDescription()  const { return description; }
+    void          setDescription(const std::string& d) { description = d; }
 
     // --- Visitado (para el reporte final) ---
     bool isVisited()  const { return visited; }
@@ -58,9 +58,9 @@ public:
     void addNPC(NPC* n)     { npcs.push_back(n); }
     void addItem(Item* i)   { items.push_back(i); }
 
-    const vector<Enemy*>& getEnemies() const { return enemies; }
-    const vector<NPC*>&   getNPCs()    const { return npcs; }
-    const vector<Item*>&  getItems()   const { return items; }
+    const std::vector<Enemy*>& getEnemies() const { return enemies; }
+    const std::vector<NPC*>&   getNPCs()    const { return npcs; }
+    const std::vector<Item*>&  getItems()   const { return items; }
 
     bool hasLiveEnemies() const;
     bool hasBoss()        const;

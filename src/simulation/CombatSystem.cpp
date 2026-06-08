@@ -130,6 +130,8 @@ CombatResult CombatSystem::useItem() {
         Potion* p = dynamic_cast<Potion*>(item);
         if (p) {
             p->use(hero);
+            hero.removeItem(p); //Incluimos esta linea porque sino Hero y DungeonLoader intentan hacer delete sobre el mismo puntero
+            delete p;
             logger.log("Use " + p->getName() + ". heroe HP: " + to_string(hero.getHp()));
 
             // El enemigo igual contraataca este turno

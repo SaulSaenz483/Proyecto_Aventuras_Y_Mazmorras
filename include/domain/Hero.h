@@ -10,7 +10,7 @@
 #include <vector>
 #include <string>
 
-using namespace std;
+
 
 class Hero: public Entity {
 private:
@@ -18,10 +18,10 @@ private:
     int maxHp;
     int baseAttack;
     int weaponBonus;
-    vector<Item*> inventory;
+    std::vector<Item*> inventory;
 
 public:
-    Hero(string n, int health, int attack);
+    Hero(std::string n, int health, int attack);
     ~Hero() override;
 
     void interact() override;
@@ -32,6 +32,7 @@ public:
     void equipWeapon(int bonus);
     void addItem(Item* item);
     void showInventory() const;
+    void removeItem(Item* item);
 
     // Getters
     int  getHp()           const { return hp; }
@@ -41,7 +42,7 @@ public:
     int  getWeaponBonus()  const {return weaponBonus; }
     bool isAlive()         const { return hp > 0; }
 
-    const vector<Item*>& getInventory() const { return inventory; }
+    const std::vector<Item*>& getInventory() const { return inventory; }
 };
 
 #endif //PROYECTO_AVENTURAS_Y_MAZMORRAS_HERO_H

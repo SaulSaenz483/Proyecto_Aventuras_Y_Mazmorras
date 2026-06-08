@@ -21,7 +21,7 @@ void Enemy:: interact() {
 void Enemy:: takeDamage(int amount) {
     hp -= amount;
     if (hp < 0) hp=0;
-    cout << name << "took "<< amount << " damage!\n";
+    cout << name << " took "<< amount << " damage!\n";
     if (hp==0) {
         cout <<"It has been defeated!\n";
     } else {

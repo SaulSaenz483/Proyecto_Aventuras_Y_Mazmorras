@@ -9,7 +9,7 @@
 #include "domain/Enemy.h"
 #include "output/Logger.h"
 
-using namespace std;
+
 
 // Resultado posible al salir del combate
 enum class CombatResult {
@@ -38,8 +38,8 @@ private:
     bool enemyTurn();
 
     // Barra de HP visual: [||||||||  ] 80/100
-    static string hpBar(int current, int max, int width = 10);
-    static string padRight(const string& s, int width);
+    static std::string hpBar(int current, int max, int width = 10);
+    static std::string padRight(const std::string& s, int width);
 
 public:
     CombatSystem(Hero& h, Enemy& e, Logger& l);
