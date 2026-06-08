@@ -49,6 +49,7 @@ SimulationEngine::SimulationEngine(Hero& h, DungeonLoader& d, Logger& l)
 
 void SimulationEngine::drawMap() const {
     clearScreen();
+    cout.flush();
 
     const int MW = dungeon.getWidth();
     const int SP = 26;              // wide enough for "HP [||||||||||] 100/100"
@@ -243,16 +244,10 @@ bool SimulationEngine::moveHero(int dx, int dy) {
 // ── readInput — reads exactly one char, ignores the rest of the line ────────
 
 static char readInput() {
-    char c = '\0';
-    // Read characters until we get a non-whitespace one
-    while (cin.get(c)) {
-        if (c != '\n' && c != '\r' && c != ' ') {
-            // Flush remaining input on this line
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            return (char)tolower(c);
-        }
-    }
-    return 'q'; // EOF fallback
+    string line;
+    if (!getline(cin, line)) return 'q';
+    if (line.empty()) return '\0';
+    return (char)tolower(line[0]);
 }
 
 // ── run ────────────────────────────────────────────────────────────────────
@@ -281,10 +276,10 @@ GameResult SimulationEngine::run() {
         char input = readInput();
 
         switch (input) {
-            case 'w': moveHero( 0, -1); break;
-            case 's': moveHero( 0,  1); break;
-            case 'a': moveHero(-1,  0); break;
-            case 'd': moveHero( 1,  0); break;
+            case 'w': moveHero( 0, -1); cin.ignore(numeric_limits<streamsize>::max(), '\n'); break;
+            case 's': moveHero( 0,  1); cin.ignore(numeric_limits<streamsize>::max(), '\n'); break;
+            case 'a': moveHero(-1,  0); cin.ignore(numeric_limits<streamsize>::max(), '\n'); break;
+            case 'd': moveHero( 1,  0); cin.ignore(numeric_limits<streamsize>::max(), '\n'); break;
             case 'i':
                 clearScreen();
                 hero.showInventory();

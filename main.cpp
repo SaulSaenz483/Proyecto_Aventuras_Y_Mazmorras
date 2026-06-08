@@ -31,6 +31,7 @@ int main() {
         dungeon.loadMap    ("data/map.txt");
         dungeon.loadEnemies("data/enemies.txt");
         dungeon.loadItems  ("data/items.txt");
+        dungeon.loadNPCs   ("data/npcs.txt");
     } catch (const exception& e) {
         cerr << "[ERROR] Failed to load dungeon: " << e.what() << "\n";
         return 1;

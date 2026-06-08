@@ -100,6 +100,8 @@ void DungeonLoader::loadMap(const string& filepath) {
             throw runtime_error("DungeonLoader: missing rows in map.txt (row " +
                                 to_string(row) + ")");
 
+        line = trim(line);   // ← agregar esta línea
+
         // Rellenar con '.' si la linea es mas corta que width
         while ((int)line.size() < width) line += '.';
 

@@ -1,0 +1,2 @@
+# col|row|nombre|dialogo
+8|5|Elder Thorn|Beware traveler. Grimfang guards the east and Malachar awaits in the depths. Find the red potion before the final battle!

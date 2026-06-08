@@ -163,6 +163,10 @@ CombatResult CombatSystem::start() {
     logger.log("Combat has begun: " + hero.getName() +
                " vs " + enemy.getName() + " [" + enemy.getEnemyType() + "]");
 
+    // Vaciar buffer interno de cin
+    cin.clear();
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
     while (hero.isAlive() && enemy.isAlive()) {
         drawCombatScreen();
 
