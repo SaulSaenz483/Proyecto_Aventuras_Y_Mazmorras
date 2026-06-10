@@ -11,12 +11,12 @@
 
 
 
-// Resultado posible al salir del combate
+// Possible outcome upon exiting combat
 enum class CombatResult {
-    HERO_WON,   // el enemigo murio
-    HERO_DIED,  // el heroe murio
-    HERO_FLED,   // el heroe huyo (enemigo sigue vivo)
-    CONTINUE    // turno terminó, combate sigue
+    HERO_WON,   // the enemy died
+    HERO_DIED,  // the hero died
+    HERO_FLED,   // the hero fled (enemy is still alive)
+    CONTINUE    // turn ended, combat continues
 };
 
 class CombatSystem {
@@ -25,26 +25,26 @@ private:
     Enemy&  enemy;
     Logger& logger;
 
-    // Render de la pantalla de combate
+    // Render the combat screen
     void drawCombatScreen() const;
 
-    // Acciones individuales — devuelven true si el combate termino
+    // Individual actions — return true if the battle has ended
     CombatResult attack();
     CombatResult useItem();
     CombatResult flee();
 
-    // Turno del enemigo — contraataca siempre despues de la accion del heroe
-    // devuelve true si el heroe murio
+    // Enemy's turn — always counterattacks after the hero's action
+    // returns true if the hero died
     bool enemyTurn();
 
-    // Barra de HP visual: [||||||||  ] 80/100
+    // HP bar: [||||||||  ] 80/100
     static std::string hpBar(int current, int max, int width = 10);
     static std::string padRight(const std::string& s, int width);
 
 public:
     CombatSystem(Hero& h, Enemy& e, Logger& l);
 
-    // Inicia el bucle completo de combate y devuelve el resultado
+    // Starts the full combat loop and returns the result
     CombatResult start();
 };
 

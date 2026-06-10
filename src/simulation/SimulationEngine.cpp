@@ -14,7 +14,7 @@
 
 using namespace std;
 
-// ── helpers ────────────────────────────────────────────────────────────────
+// ---------------------- helpers ----------------------
 
 void SimulationEngine::clearScreen() {
     // Terminal clearing not used — compatible with all environments
@@ -33,7 +33,7 @@ string SimulationEngine::padRight(const string& s, int width) {
     return s + string(width - (int)s.size(), ' ');
 }
 
-// ── constructor ────────────────────────────────────────────────────────────
+// ---------------------- constructor ----------------------
 
 SimulationEngine::SimulationEngine(Hero& h, DungeonLoader& d, Logger& l)
     : hero(h), dungeon(d), logger(l),
@@ -41,7 +41,7 @@ SimulationEngine::SimulationEngine(Hero& h, DungeonLoader& d, Logger& l)
       lastDx(0), lastDy(0),
       running(true) {}
 
-// ── drawMap ────────────────────────────────────────────────────────────────
+// ---------------------- drawMap ----------------------
 
 void SimulationEngine::drawMap() const {
     clearScreen();
@@ -128,7 +128,7 @@ void SimulationEngine::drawMap() const {
     cout << borderBot << "\n";
 }
 
-// ── drawVictory / drawDefeat ───────────────────────────────────────────────
+// ---------------------- drawVictory / drawDefeat ----------------------
 
 void SimulationEngine::drawVictory() const {
     clearScreen();
@@ -149,7 +149,7 @@ void SimulationEngine::drawDefeat() const {
     cout << "  ==========================================\n\n";
 }
 
-// ── handleEnemies ──────────────────────────────────────────────────────────
+// ---------------------- handleEnemies ----------------------
 
 void SimulationEngine::handleEnemies(Room& room) {
     vector<Enemy*> enemies = room.getEnemies();
@@ -180,7 +180,7 @@ void SimulationEngine::handleEnemies(Room& room) {
     }
 }
 
-// ── handleNPCs ─────────────────────────────────────────────────────────────
+// ---------------------- handleNPCs ----------------------
 
 void SimulationEngine::handleNPCs(Room& room) {
     for (NPC* n : room.getNPCs()) {
@@ -195,7 +195,7 @@ void SimulationEngine::handleNPCs(Room& room) {
     }
 }
 
-// ── handleItems ────────────────────────────────────────────────────────────
+// ---------------------- handleItems ----------------------
 
 void SimulationEngine::handleItems(Room& room) {
     vector<Item*> items = room.getItems();
@@ -203,7 +203,7 @@ void SimulationEngine::handleItems(Room& room) {
         hero.addItem(item);
         room.removeItem(item);
 
-        // Las armas se equipan automáticamente al recogerlas
+        // Weapons are automatically equipped when picked up
         if (dynamic_cast<Weapon*>(item)) {
             item->use(hero);
             logger.log("Weapon equipped: " + item->getName() +
@@ -216,7 +216,7 @@ void SimulationEngine::handleItems(Room& room) {
         room.setType(CellType::FLOOR);
 }
 
-// ── moveHero ───────────────────────────────────────────────────────────────
+// ---------------------- moveHero ----------------------
 
 bool SimulationEngine::moveHero(int dx, int dy) {
     int nx = heroX + dx;
@@ -251,7 +251,7 @@ bool SimulationEngine::moveHero(int dx, int dy) {
     return true;
 }
 
-// ── readInput — reads exactly one char, ignores the rest of the line ────────
+// ---------------------- readInput — reads exactly one char, ignores the rest of the line ----------------------
 
 static char readInput() {
     string line;
@@ -260,7 +260,7 @@ static char readInput() {
     return (char)tolower(line[0]);
 }
 
-// ── run ────────────────────────────────────────────────────────────────────
+// ---------------------- run ----------------------
 
 GameResult SimulationEngine::run() {
     dungeon.getRoom(heroX, heroY).markVisited();

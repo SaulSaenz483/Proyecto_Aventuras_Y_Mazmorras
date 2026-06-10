@@ -10,7 +10,7 @@
 
 using namespace std;
 
-// ── helpers ────────────────────────────────────────────────────────────────
+// ---------------------- helpers ----------------------
 
 string CombatSystem::hpBar(int current, int max, int width) {
     if (max <= 0) return string(width, ' ');
@@ -25,16 +25,16 @@ string CombatSystem::padRight(const string& s, int width) {
     return s + string(width - (int)s.size(), ' ');
 }
 
-// ── constructor ────────────────────────────────────────────────────────────
+//---------------------- constructor ----------------------
 
 CombatSystem::CombatSystem(Hero& h, Enemy& e, Logger& l)
     : hero(h), enemy(e), logger(l) {}
 
-// ── drawCombatScreen ───────────────────────────────────────────────────────
+// ---------------------- drawCombatScreen ----------------------
 
 void CombatSystem::drawCombatScreen() const {
     const int TW = 54;
-    // Lineas de borde
+    // Border lines
     string top    = "+" + string(TW, '=') + "+";
     string mid    = "+" + string(TW, '-') + "+";
     string bottom = "+" + string(TW, '=') + "+";
@@ -55,12 +55,12 @@ void CombatSystem::drawCombatScreen() const {
     cout << "|" << string(pad, ' ') << title
          << string(TW - pad - (int)title.size(), ' ') << "|\n";
 
-    // Nombres
+    // Names
     cout << mid << "\n";
     splitRow(hero.getName(),
              enemy.getName() + " [" + enemy.getEnemyType() + "]");
 
-    // Barras de HP
+    // HP bars
     string heroBar  = "HP [" + hpBar(hero.getHp(),  hero.getMaxHp()) + "] " +
                       to_string(hero.getHp()) + "/" + to_string(hero.getMaxHp());
     string enemyBar = "HP [" + hpBar(enemy.getHp(), enemy.getMaxHp()) + "] " +
@@ -80,13 +80,13 @@ void CombatSystem::drawCombatScreen() const {
         fullRow(*it);
     for (int i = printed; i < 3; i++) fullRow("");
 
-    // Opciones
+    // Options
     cout << mid << "\n";
     fullRow("[1] Attack   [2] Use item   [3] Run");
     cout << bottom << "\n";
 }
 
-// ── enemyTurn ──────────────────────────────────────────────────────────────
+// ---------------------- enemyTurn ----------------------
 
 bool CombatSystem::enemyTurn() {
     int dmg = enemy.getDamage();
@@ -96,7 +96,7 @@ bool CombatSystem::enemyTurn() {
     return !hero.isAlive();
 }
 
-// ── attack ─────────────────────────────────────────────────────────────────
+// ─---------------------- attack ----------------------
 
 CombatResult CombatSystem::attack() {
     int dmg = hero.getBaseAttack();
@@ -113,37 +113,37 @@ CombatResult CombatSystem::attack() {
     return CombatResult::CONTINUE;
 }
 
-// ── useItem ────────────────────────────────────────────────────────────────
+// ---------------------- useItem ----------------------
 
 CombatResult CombatSystem::useItem() {
     const auto& inv = hero.getInventory();
 
-    // Buscar la primera pocion disponible
+    // Find the first available potion
     for (Item* item : inv) {
         Potion* p = dynamic_cast<Potion*>(item);
         if (p) {
             
-            string potionName = p->getName(); // guardar nombre ANTES del delete
+            string potionName = p->getName(); // Save the name BEFORE deleting
             p->use(hero);
             hero.removeItem(p);
             delete p;
             logger.log("Used " + potionName + ". Hero HP: " + to_string(hero.getHp()));
 
-            // El enemigo igual contraataca este turno
+            // The enemy will counterattack this turn anyway
             if (enemyTurn()) return CombatResult::HERO_DIED;
             return CombatResult::CONTINUE; // combate sigue
         }
     }
 
-    // No habia pocion
+    // There was no potion
     cout << "  You have no potions available.\n";
     logger.log("Tried to use an item but no potions were available.");
 
     if (enemyTurn()) return CombatResult::HERO_DIED;
-    return CombatResult::CONTINUE; // combate sigue
+    return CombatResult::CONTINUE; // The battle continues
 }
 
-// ── flee ───────────────────────────────────────────────────────────────────
+// ---------------------- flee ----------------------
 
 CombatResult CombatSystem::flee() {
     // Huir tiene costo: el enemigo da un golpe de salida
@@ -154,7 +154,7 @@ CombatResult CombatSystem::flee() {
     return CombatResult::HERO_FLED;
 }
 
-// ── start ──────────────────────────────────────────────────────────────────
+// ---------------------- start ----------------------
 
 CombatResult CombatSystem::start() {
     logger.log("Combat has begun: " + hero.getName() +
@@ -189,7 +189,7 @@ CombatResult CombatSystem::start() {
 
         logger.nextTurn();
 
-        // Si el enemigo murio o huimos o morimos, salimos del bucle
+        // If the enemy is dead, we've fled, or we've died, we exit the loop
         if (!enemy.isAlive())                  return CombatResult::HERO_WON;
         if (!hero.isAlive())                   return CombatResult::HERO_DIED;
         if (result == CombatResult::HERO_FLED) return CombatResult::HERO_FLED;

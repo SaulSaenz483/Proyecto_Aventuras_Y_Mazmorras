@@ -33,7 +33,7 @@ private:
 
     int  heroX;
     int  heroY;
-    int  lastDx;   // ultimo delta — usado para retroceder al huir
+    int  lastDx;   // last delta — used to move backward while fleeing
     int  lastDy;
     bool running;
 
@@ -47,7 +47,7 @@ private:
     static std::string padRight(const std::string& s, int width);
     static void   clearScreen();
 
-    // Logica
+    // Logic
     bool moveHero    (int dx, int dy);
     void handleEnemies(Room& room);
     void handleNPCs   (Room& room);

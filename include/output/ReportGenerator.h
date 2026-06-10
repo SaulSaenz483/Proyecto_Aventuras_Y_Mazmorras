@@ -14,8 +14,8 @@
 
 class ReportGenerator {
 public:
-    // Genera el reporte en outputPath.
-    // Throws std::runtime_error si no puede crear el archivo.
+    // Generates the report in outputPath.
+    // Throws std::runtime_error if it cannot create the file.
     static void generate(const Hero&      hero,
                          const DungeonLoader& dungeon,
                          GameResult       result,

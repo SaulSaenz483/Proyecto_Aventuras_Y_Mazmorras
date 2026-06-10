@@ -1,4 +1,4 @@
-# col|row|nombre|tipo|hp|damage
+# col|row|name|type|hp|damage
 6|4|Grug|Goblin|25|5
 14|3|Bonecrusher|Skeleton|45|10
 14|5|Shadowclaw|Demon|60|15

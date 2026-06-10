@@ -14,13 +14,13 @@ class Item;
 
 
 
-// Cada tipo mapea a exactamente 1 caracter ASCII — ancho siempre 1
+// Each type maps to exactly one ASCII character — always 1 byte wide
 enum class CellType {
     FLOOR,      // '.'
     WALL,       // '#'
-    PLAYER,     // '@'  (solo para render)
+    PLAYER,     // '@'
     ENEMY,      // 'E'
-    BOSS,       // 'B'  <- jefe final, derrotarlo = victoria
+    BOSS,       // 'B'  <- Final boss; defeat him = victory
     NPC,        // 'N'
     TREASURE    // '$'
 };
@@ -31,7 +31,7 @@ private:
     std::string         description;
     bool           visited;
 
-    // Punteros no propietarios — DungeonLoader es dueno
+// Non-owner pointers — DungeonLoader is the owner
     std::vector<Enemy*> enemies;
     std::vector<NPC*>   npcs;
     std::vector<Item*>  items;
@@ -39,21 +39,21 @@ private:
 public:
     explicit Room(CellType t = CellType::FLOOR, const std::string& desc = "");
 
-    // --- Tipo y render ---
+    // --- Type y render ---
     CellType      getType()         const { return type; }
     void          setType(CellType t)     { type = t; }
     char          getSymbol()       const;
     bool          isWalkable()      const { return type != CellType::WALL; }
 
-    // --- Descripcion ---
+    // --- Description ---
     const std::string& getDescription()  const { return description; }
     void          setDescription(const std::string& d) { description = d; }
 
-    // --- Visitado (para el reporte final) ---
+    // --- Visited (for the final report) ---
     bool isVisited()  const { return visited; }
     void markVisited()      { visited = true; }
 
-    // --- Entidades ---
+    // --- Entities ---
     void addEnemy(Enemy* e) { enemies.push_back(e); }
     void addNPC(NPC* n)     { npcs.push_back(n); }
     void addItem(Item* i)   { items.push_back(i); }

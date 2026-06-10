@@ -14,7 +14,7 @@ class Potion:public Item {
 
 private:
 
-    int effectValue; //Cuanto cura o cuanta fuerza da
+    int effectValue; //How much healing or strength it provides
     std::string effectType; // Heal , buff
 
 public:

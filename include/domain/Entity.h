@@ -16,7 +16,7 @@ public:
     Entity(std::string n): name(n) {}
     virtual ~Entity()=default;
 
-    //Metodo virtual puro para el polimorfismo
+//Pure virtual method for polymorphism
     virtual void interact()=0;
     std::string getName()const {return name;}
     

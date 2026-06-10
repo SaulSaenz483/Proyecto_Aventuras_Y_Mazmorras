@@ -16,25 +16,25 @@ class Logger {
 private:
     std::ofstream      file;
     int           turn;
-    std::deque<std::string> recent;          // ultimas lineas para el panel visual
+    std::deque<std::string> recent;          // final lines for the visual panel
     static const int MAX_RECENT = 4;
 
 public:
     explicit Logger(const std::string& outputPath);
     ~Logger();
 
-    // Sin copias — maneja un archivo abierto
+    // No copies — handles an open file
     Logger(const Logger&)            = delete;
     Logger& operator=(const Logger&) = delete;
 
-    // Registra un evento en el archivo y en memoria
+    // Logs an event to the file and in memory
     void log(const std::string& message);
 
-    // Avanza el contador de turno
+    // Increment the turn counter
     void nextTurn() { turn++; }
     int  getTurn()  const { return turn; }
 
-    // Para el panel visual — devuelve las ultimas MAX_RECENT lineas
+  // For the visual panel — returns the last MAX_RECENT lines
     const std::deque<std::string>& getRecent() const { return recent; }
 };
 

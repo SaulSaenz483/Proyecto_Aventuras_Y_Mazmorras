@@ -26,11 +26,11 @@ Logger::~Logger() {
 void Logger::log(const string& message) {
     string entry = "[T" + to_string(turn) + "] " + message;
 
-    // Escribe al archivo inmediatamente
+    // Write to the file immediately
     file << entry << "\n";
     file.flush();
 
-    // Guarda en memoria para el panel visual
+    // Store in memory for the visual panel
     recent.push_back(entry);
     if ((int)recent.size() > MAX_RECENT)
         recent.pop_front();

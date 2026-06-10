@@ -16,15 +16,15 @@ class NPC: public Entity {
 private:
     std::string dialogue;
     std::string actionType;  // "heal", "give_potion", "none"
-    int    actionValue; // cantidad de HP o valor del efecto
-    bool   actionUsed;  // cada NPC ayuda solo una vez
+    int    actionValue; // HP amount or effect value
+    bool   actionUsed;  // Each NPC can only help once
 
 public:
     NPC(std::string n, std::string dial, std::string action = "none", int value = 0);
     ~NPC() override = default;
 
     void interact() override;
-    void applyEffect(Hero& hero);   // aplica el efecto al heroe
+    void applyEffect(Hero& hero);   // Apply the effect to the hero
 
     std::string getDialogue()   const { return dialogue; }
     std::string getActionType() const { return actionType; }

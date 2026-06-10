@@ -26,7 +26,7 @@ public:
 
     void interact() override;
 
-    // Acciones
+    // Actions
     void takeDamage(int amount);
     void heal(int amount);
     void equipWeapon(int bonus);

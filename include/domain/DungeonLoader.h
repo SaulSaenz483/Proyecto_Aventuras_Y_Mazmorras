@@ -22,9 +22,9 @@ private:
     int startX;
     int startY;
 
-    Enemy* boss;               // condicion de victoria
+    Enemy* boss;               // victory condition
 
-    // DungeonLoader es dueno de estos objetos
+    // DungeonLoader owns these objects
     std::vector<Enemy*> allEnemies;
     std::vector<NPC*>   allNPCs;
     std::vector<Item*>  allItems;
@@ -39,13 +39,13 @@ public:
     DungeonLoader(const DungeonLoader&)            = delete;
     DungeonLoader& operator=(const DungeonLoader&) = delete;
 
-    // Cargar en este orden:
+    // Load in this order:
     void loadMap     (const std::string& filepath);
     void loadEnemies (const std::string& filepath);
     void loadItems   (const std::string& filepath);
     void loadNPCs    (const std::string& filepath);
 
-    // Acceso a la cuadricula
+    // Access to the grid
     Room&       getRoom(int x, int y);
     const Room& getRoom(int x, int y) const;
     bool        isValid(int x, int y) const;

@@ -17,7 +17,7 @@ void ReportGenerator::generate(const Hero&          hero,
     if (!file.is_open())
         throw runtime_error("ReportGenerator: Cannot be created: " + outputPath);
 
-    // ── encabezado ────────────────────────────────────────────────────────
+    // ---------------------- header ----------------------
     file << "============================================================\n";
     file << "        ADVENTURES & DUNGEONS — FINAL REPORT\n";
     file << "============================================================\n\n";
@@ -26,7 +26,7 @@ void ReportGenerator::generate(const Hero&          hero,
          << (result == GameResult::VICTORY ? "VICTORY" : "DEFEAT") << "\n";
     file << "  TURNS    : " << totalTurns << "\n\n";
 
-    // ── estado del heroe ──────────────────────────────────────────────────
+    // ---------------------- heroe status ----------------------
     file << "------------------------------------------------------------\n";
     file << "  HEROE\n";
     file << "------------------------------------------------------------\n";
@@ -41,15 +41,15 @@ void ReportGenerator::generate(const Hero&          hero,
     for (size_t i = 0; i < inv.size(); i++)
         file << "    [" << (i + 1) << "] " << inv[i]->getName() << "\n";
 
-    // ── estado del mundo ──────────────────────────────────────────────────
+    // ---------------------- world status ----------------------
     file << "\n------------------------------------------------------------\n";
     file << "  DUNGEON\n";
     file << "------------------------------------------------------------\n";
     file << "  Size     : " << dungeon.getWidth()
          << " x "             << dungeon.getHeight() << "\n";
 
-    // Contar celdas exploradas
-    int explored = 0;
+ // Count the number of cells explored
+ int explored = 0;
     int total    = 0;
     for (int y = 0; y < dungeon.getHeight(); y++) {
         for (int x = 0; x < dungeon.getWidth(); x++) {
@@ -62,14 +62,13 @@ void ReportGenerator::generate(const Hero&          hero,
     }
     file << "  Exploring  : " << explored << " / " << total << " cells\n";
 
-    // Estado del Boss
+    // Boss status
     Enemy* boss = dungeon.getBoss();
     if (boss != nullptr) {
         file << "  Boss       : " << boss->getName()
              << " — " << (boss->isAlive() ? "ALIVE" : "DEFEAT") << "\n";
     }
 
-    // ── pie ───────────────────────────────────────────────────────────────
     file << "\n============================================================\n";
     file << "  See adventure log.txt for the full log.\n";
     file << "============================================================\n";

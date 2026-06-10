@@ -12,7 +12,7 @@
 
 using namespace std;
 
-// ── helpers ────────────────────────────────────────────────────────────────
+// --------------------------- helpers ---------------------------
 
 string DungeonLoader::trim(const string& s) {
     size_t start = s.find_first_not_of(" \t\r\n");
@@ -25,11 +25,11 @@ CellType DungeonLoader::charToCell(char c) {
     switch (c) {
         case '#': return CellType::WALL;
         case '@': return CellType::PLAYER;
-        default:  return CellType::FLOOR; // E, B, N, $ se ignoran — los cargan los loaders
+        default:  return CellType::FLOOR; // E, B, N, $ are ignored — they are loaded by the loaders
     }
 }
 
-// ── constructor / destructor ───────────────────────────────────────────────
+// --------------------------- constructor / destructor ---------------------------
 
 DungeonLoader::DungeonLoader()
     : width(0), height(0), startX(1), startY(1), boss(nullptr) {}
@@ -40,7 +40,7 @@ DungeonLoader::~DungeonLoader() {
     for (Item*  i : allItems)   delete i;
 }
 
-// ── acceso a la cuadricula ─────────────────────────────────────────────────
+// --------------------------- Access to the grid  ---------------------------
 
 bool DungeonLoader::isValid(int x, int y) const {
     return x >= 0 && x < width && y >= 0 && y < height;
@@ -60,7 +60,7 @@ const Room& DungeonLoader::getRoom(int x, int y) const {
     return grid[y][x];
 }
 
-// ── loadMap ────────────────────────────────────────────────────────────────
+//--------------------------- loadMap ---------------------------
 
 void DungeonLoader::loadMap(const string& filepath) {
     ifstream file(filepath);
@@ -69,7 +69,7 @@ void DungeonLoader::loadMap(const string& filepath) {
 
     string line;
 
-    // Linea 1: WIDTH|HEIGHT
+    // line 1: WIDTH|HEIGHT
     if (!getline(file, line))
         throw runtime_error("DungeonLoader: map.txt is empty");
 
@@ -86,25 +86,24 @@ void DungeonLoader::loadMap(const string& filepath) {
             throw runtime_error("DungeonLoader: invalid dimensions in map.txt");
     }
 
-    // Inicializar grid con celdas FLOOR
+    // Initialize grid with FLOOR cells
     grid.assign(height, vector<Room>(width));
 
-    // Leer filas del mapa
+    // Read rows from the map
     for (int row = 0; row < height; row++) {
         if (!getline(file, line))
             throw runtime_error("DungeonLoader: missing rows in map.txt (row " +
                                 to_string(row) + ")");
 
-        line = trim(line);   // ← agregar esta línea
+        line = trim(line);
 
-        // Rellenar con '.' si la linea es mas corta que width
         while ((int)line.size() < width) line += '.';
 
         for (int col = 0; col < width; col++) {
             CellType ct = charToCell(line[col]);
             grid[row][col].setType(ct);
 
-            // '@' marca la posicion de inicio del heroe
+            // ‘@’ marks the hero's starting position
             if (ct == CellType::PLAYER) {
                 startX = col;
                 startY = row;

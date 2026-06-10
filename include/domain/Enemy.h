@@ -22,7 +22,7 @@ public:
     ~Enemy() override = default;
 
 
-    void interact() override; //Sobreescribimos el interact para polimorfismo
+    void interact() override; //Override the interact method for polymorphism
 
     void takeDamage(int amount);
 

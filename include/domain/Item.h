@@ -9,7 +9,7 @@
 #include <iostream>
 
 
-//Forward declaration para evitar dependencias circulares
+//Forward declaration to avoid circular dependencies
 
 class Hero;
 
@@ -24,15 +24,15 @@ protected:
 public:
     Item(std::string n,std::string d, double w, std::string r):name(n), description(d), weight(w), rarity(r) {}
 
-    virtual ~Item() = default; //Destructor virtual esencial para herencia polimorfica
+    virtual ~Item() = default; //Essential virtual destructor for polymorphic inheritance
 
-    //El metodo virtual puro que definimos para que la clase sea abstracta
+    //The pure virtual method to make the class abstract
 
     virtual void use(Hero& target) = 0;
     virtual void getInfo()const {
         std::cout << "[" << rarity << "] " << name << ": " << description << " (" << weight << "kg)\n";
     }
-    //Getters y setters irian aca, de momento no los he implementado
+
     std::string getName() const{return name;}
 
 
