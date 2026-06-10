@@ -1,2 +1,3 @@
-# col|row|nombre|dialogo
-8|5|Elder Thorn|Beware traveler. Grimfang guards the east and Malachar awaits in the depths. Find the red potion before the final battle!
+# col|row|nombre|dialogo|accion|valor
+16|6|Old Sage|The Lich King Malachar guards the eastern corridor. Without a blessed weapon your strikes will be weak. Let me restore your strength!|heal|30
+3|5|Wounded Knight|I tried to fight the demons without a proper weapon. Learn from my mistake. Search the southern passage for the Sword of Light! Take this potion.|give_potion|35

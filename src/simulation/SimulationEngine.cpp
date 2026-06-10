@@ -17,11 +17,7 @@ using namespace std;
 // ── helpers ────────────────────────────────────────────────────────────────
 
 void SimulationEngine::clearScreen() {
-#ifdef _WIN32
-    system("cls");
-#else
-    system("clear");
-#endif
+    // Terminal clearing not used — compatible with all environments
 }
 
 string SimulationEngine::hpBar(int current, int max, int width) {
@@ -99,10 +95,20 @@ void SimulationEngine::drawMap() const {
             side = atkStr;
         } else if (row == 1) {
             side = "--- Inventory ---";
-        } else {
-            int idx = row - 2;
-            if (idx >= 0 && idx < (int)inv.size())
-                side = inv[idx]->getName();
+        } else if (row == 2) {
+            int idx = 0;
+            if (idx < (int)inv.size()) side = "> " + inv[idx]->getName();
+        } else if (row == 3) {
+            int idx = 1;
+            if (idx < (int)inv.size()) side = "> " + inv[idx]->getName();
+        } else if (row == 4) {
+            side = "--- Legend ---";
+        } else if (row == 5) {
+            side = "@ Hero  E Enemy";
+        } else if (row == 6) {
+            side = "B Boss  N NPC";
+        } else if (row == 7) {
+            side = "$ Item  # Wall";
         }
         cout << " " << padRight(side, SP - 1) << "|\n";
     }
@@ -166,21 +172,26 @@ void SimulationEngine::handleEnemies(Room& room) {
     }
 
     room.removeDeadEnemies();
-    if (!room.hasLiveEnemies() && !room.hasItems() && !room.hasNPCs())
-        room.setType(CellType::FLOOR);
+    if (!room.hasLiveEnemies()) {
+        cout << "\n  Enemy defeated! Press ENTER to continue...";
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        if (!room.hasItems() && !room.hasNPCs())
+            room.setType(CellType::FLOOR);
+    }
 }
 
 // ── handleNPCs ─────────────────────────────────────────────────────────────
 
 void SimulationEngine::handleNPCs(Room& room) {
     for (NPC* n : room.getNPCs()) {
-        clearScreen();
         cout << "\n  +---------------------------------+\n";
-        n->interact();   // polimorfismo real — NPC imprime su propio dialogo
-        cout << "  +---------------------------------+\n\n";
-        cout << "  Press ENTER to continue...";
+        n->interact();
+        cout << "  +---------------------------------+\n";
+        n->applyEffect(hero);
+        cout << "\n  Press ENTER to continue...";
         cin.get();
-        logger.log("NPC encountered: " + n->getName());
+        logger.log("NPC encountered: " + n->getName() +
+                   " | Action: " + n->getActionType());
     }
 }
 
@@ -274,11 +285,11 @@ GameResult SimulationEngine::run() {
 
         char input = readInput();
 
-        switch (input) {
-            case 'w': moveHero( 0, -1); cin.ignore(numeric_limits<streamsize>::max(), '\n'); break;
-            case 's': moveHero( 0,  1); cin.ignore(numeric_limits<streamsize>::max(), '\n'); break;
-            case 'a': moveHero(-1,  0); cin.ignore(numeric_limits<streamsize>::max(), '\n'); break;
-            case 'd': moveHero( 1,  0); cin.ignore(numeric_limits<streamsize>::max(), '\n'); break;
+    switch (input) {
+            case 'w': moveHero( 0, -1); break;
+            case 's': moveHero( 0,  1); break;
+            case 'a': moveHero(-1,  0); break;
+            case 'd': moveHero( 1,  0); break;
             case 'i':
                 clearScreen();
                 hero.showInventory();

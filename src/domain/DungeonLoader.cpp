@@ -263,10 +263,13 @@ void DungeonLoader::loadNPCs(const string& filepath) {
         stringstream ss(line);
         string col_str, row_str, name, dialogue;
 
-        getline(ss, col_str,  '|');
-        getline(ss, row_str,  '|');
-        getline(ss, name,     '|');
-        getline(ss, dialogue, '|');
+        string action_str, value_str;
+        getline(ss, col_str,    '|');
+        getline(ss, row_str,    '|');
+        getline(ss, name,       '|');
+        getline(ss, dialogue,   '|');
+        getline(ss, action_str, '|');
+        getline(ss, value_str,  '|');
 
         if (col_str.empty() || row_str.empty() || name.empty() || dialogue.empty())
             throw runtime_error("DungeonLoader: invalid line " +
@@ -279,7 +282,9 @@ void DungeonLoader::loadNPCs(const string& filepath) {
             throw runtime_error("DungeonLoader: NPC position out of bounds at line " +
                                 to_string(lineNum));
 
-        NPC* n = new NPC(trim(name), trim(dialogue));
+        string action = action_str.empty() ? "none" : trim(action_str);
+        int value = value_str.empty() ? 0 : stoi(trim(value_str));
+        NPC* n = new NPC(trim(name), trim(dialogue), action, value);
         allNPCs.push_back(n);
         grid[row][col].addNPC(n);
         grid[row][col].setType(CellType::NPC);

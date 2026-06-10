@@ -1,3 +1,3 @@
 # tipo|col|row|nombre|descripcion|peso|rareza|stat|efecto
-W|15|6|Longsword|Ancient Steel Blade|3.5|Rare|12|Slash
-P|10|4|Red Potion|Restores Health|0.3|Common|30|Heal
+W|1|6|Sword of Light|Ancient blade blessed by the gods|3.5|Legendary|20|Slash
+P|15|3|Holy Potion|Sacred water that restores vitality|0.3|Rare|40|Heal

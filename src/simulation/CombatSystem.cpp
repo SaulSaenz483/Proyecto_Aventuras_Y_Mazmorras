@@ -33,14 +33,7 @@ CombatSystem::CombatSystem(Hero& h, Enemy& e, Logger& l)
 // ── drawCombatScreen ───────────────────────────────────────────────────────
 
 void CombatSystem::drawCombatScreen() const {
-#ifdef _WIN32
-    system("cls");
-#else
-    system("clear");
-#endif
-
-    const int TW = 44; // ancho interior
-
+    const int TW = 54;
     // Lineas de borde
     string top    = "+" + string(TW, '=') + "+";
     string mid    = "+" + string(TW, '-') + "+";
@@ -109,7 +102,7 @@ CombatResult CombatSystem::attack() {
     int dmg = hero.getBaseAttack();
     enemy.takeDamage(dmg);
     logger.log(hero.getName() + " attack to " + enemy.getName() +
-               " por " + to_string(dmg) + " dmg. enemy HP: " + to_string(enemy.getHp()));
+               " by " + to_string(dmg) + " dmg. enemy HP: " + to_string(enemy.getHp()));
 
     if (!enemy.isAlive()) {
         logger.log(enemy.getName() + " has been defeated!");
@@ -167,9 +160,6 @@ CombatResult CombatSystem::start() {
     logger.log("Combat has begun: " + hero.getName() +
                " vs " + enemy.getName() + " [" + enemy.getEnemyType() + "]");
 
-    // Vaciar buffer interno de cin
-    cin.clear();
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
     while (hero.isAlive() && enemy.isAlive()) {
         drawCombatScreen();

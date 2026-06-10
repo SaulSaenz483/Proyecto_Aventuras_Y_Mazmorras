@@ -1,5 +1,6 @@
 #include <iostream>
 #include <stdexcept>
+#include <limits>
  
 #include "domain/DungeonLoader.h"
 #include "domain/Hero.h"
@@ -11,11 +12,6 @@ using namespace std;
  
 int main() {
     // ── Title screen ──────────────────────────────────────────────────────
-#ifdef _WIN32
-    system("cls");
-#else
-    system("clear");
-#endif
     cout << "\n";
     cout << "  ==========================================\n";
     cout << "       ADVENTURES & DUNGEONS  v1.0\n";
@@ -23,8 +19,8 @@ int main() {
     cout << "    Explore the dungeon. Defeat the Boss.\n\n";
     cout << "  Press ENTER to begin...\n";
     cout << "  ==========================================\n\n";
-    cin.get();
- 
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
     // ── Load dungeon ──────────────────────────────────────────────────────
     DungeonLoader dungeon;
     try {
@@ -37,12 +33,11 @@ int main() {
         return 1;
     }
 
-
     // ── Create hero ───────────────────────────────────────────────────────
     cout << "  Enter your hero's name: ";
     string heroName;
     getline(cin, heroName);
-    if (heroName.empty()) heroName = "Aldric";  // nombre por defecto
+    if (heroName.empty()) heroName = "Aldric";
 
     Hero hero(heroName, 100, 18);
  
@@ -78,7 +73,8 @@ int main() {
     }
  
     delete logger;
+    cout << "\n  Press ENTER to exit...";
+    cin.get();
     return 0;
 }
-
 
