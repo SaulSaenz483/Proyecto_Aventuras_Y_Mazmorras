@@ -1,3 +1,8 @@
+// Programación 2
+// Proyecto Programado #2
+// ADVENTURES & DUNGEONS  v1.0
+// Daniel Castillo Jiménez
+// Saúl Sáenz Vargas
 #include <iostream>
 #include <stdexcept>
 #include <limits>
