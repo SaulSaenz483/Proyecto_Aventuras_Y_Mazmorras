@@ -49,22 +49,6 @@ Los archivos de salida se generan en `cmake-build-debug/data/`:
 - Compilador C++20 (GCC, Clang o MSVC)
 - CLion (recomendado) o cualquier entorno con CMake
 
-### Con CLion
-
-1. Abrir la carpeta del proyecto en CLion
-2. CLion detecta el `CMakeLists.txt` automáticamente
-3. Hacer clic en **Build > Build Project** o presionar `Ctrl+F9`
-4. El ejecutable se genera en `cmake-build-debug/`
-5. Los archivos de `data/` se copian automáticamente al directorio de build
-
-### Con línea de comandos
-
-```bash
-mkdir build && cd build
-cmake ..
-cmake --build .
-```
-
 ---
 
 ## Ejecución
@@ -75,19 +59,6 @@ Presionar el botón **Run** o `Shift+F10`. El programa se ejecuta en la terminal
 
 > **Nota:** La terminal de CLion no soporta limpieza de pantalla. El mapa se imprime de forma continua hacia abajo. Para una experiencia visual óptima, ejecutar desde CMD o PowerShell en Windows.
 
-### Desde CMD o PowerShell (Windows)
-
-```bat
-cd cmake-build-debug
-.\Proyecto_Aventuras_Y_Mazmorras.exe
-```
-
-### Desde terminal (Linux/macOS)
-
-```bash
-cd build
-./Proyecto_Aventuras_Y_Mazmorras
-```
 
 ---
 
@@ -177,10 +148,3 @@ Al terminar la partida (victoria, derrota o salida) el programa genera:
 - **`data/final_report.txt`** — resumen final con HP del héroe, inventario, celdas exploradas y resultado
 
 ---
-
-## Notas técnicas
-
-- El proyecto usa **rutas relativas** — no depende de la máquina del desarrollador
-- Los archivos de `data/` se copian automáticamente al directorio de build en cada compilación mediante `add_custom_command` en `CMakeLists.txt`
-- Para modificar el mundo, editar los archivos en `data/` de la **raíz del proyecto** y recompilar
-- El ejecutable es estático (`-static`) — no requiere DLLs externas para ejecutarse fuera de CLion
