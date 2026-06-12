@@ -31,7 +31,7 @@ private:
     std::string         description;
     bool           visited;
 
-// Non-owner pointers — DungeonLoader is the owner
+// Non-owner pointers - DungeonLoader is the owner
     std::vector<Enemy*> enemies;
     std::vector<NPC*>   npcs;
     std::vector<Item*>  items;

@@ -10,7 +10,17 @@
 #include <sstream>
 #include <iostream>
 
-using namespace std;
+using std::string;
+using std::cout;
+using std::endl;
+using std::out_of_range;
+using std::to_string;
+using std::ifstream;
+using std::runtime_error;
+using std::stringstream;
+using std::vector;
+using std::cerr;
+
 
 // --------------------------- helpers ---------------------------
 
@@ -116,7 +126,7 @@ void DungeonLoader::loadMap(const string& filepath) {
     cout << "-> Loading map (" << width << "x" << height << ").\n";
 }
 
-// ── loadEnemies ────────────────────────────────────────────────────────────
+// --------------------------- loadEnemies ---------------------------
 
 void DungeonLoader::loadEnemies(const string& filepath) {
     ifstream file(filepath);
@@ -180,7 +190,7 @@ void DungeonLoader::loadEnemies(const string& filepath) {
          << boss->getName() << ").\n";
 }
 
-// ── loadItems ──────────────────────────────────────────────────────────────
+// --------------------------- loadItems ---------------------------
 
 void DungeonLoader::loadItems(const string& filepath) {
     ifstream file(filepath);

@@ -5,8 +5,12 @@
 #include "output/ReportGenerator.h"
 #include <fstream>
 #include <stdexcept>
-
-using namespace std;
+using std::cout;
+using std::endl;
+using std::cin;
+using std::ofstream;
+using std::string;
+using std::runtime_error;
 
 void ReportGenerator::generate(const Hero&          hero,
                                 const DungeonLoader& dungeon,

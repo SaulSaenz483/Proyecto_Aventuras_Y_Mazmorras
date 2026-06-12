@@ -5,8 +5,8 @@
 #include "domain/Weapon.h"
 #include "domain/Hero.h"
 #include<iostream>
-
-using namespace std;
+using std::cout;
+using std::string;
 
 Weapon::Weapon(string n, string d, double w, string r, int atk, string dmgType): Item(n, d, w, r),attackBonus(atk), damageType(dmgType){}
 
@@ -16,6 +16,6 @@ void Weapon::use(Hero& target) {
 }
 
 void Weapon::getInfo() const {
-    Item::getInfo(); //LLama a la funcion del padre
+    Item::getInfo();
     cout <<" -> Attack Bonus: +"<<attackBonus<<" | Damage Type: "<<damageType<<"\n";
 }

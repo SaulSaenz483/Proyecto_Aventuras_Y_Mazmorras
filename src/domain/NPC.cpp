@@ -6,8 +6,8 @@
 #include "domain/NPC.h"
 #include "domain/Hero.h"
 #include <iostream>
-
-using namespace std;
+using std::cout;
+using std::string;
 
 NPC::NPC(string n, string dial, string action, int value)
     : Entity(n), dialogue(dial), actionType(action), actionValue(value), actionUsed(false) {}

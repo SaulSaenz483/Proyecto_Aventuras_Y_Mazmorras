@@ -6,8 +6,8 @@
 #include "domain/Hero.h"
 #include<string>
 #include <iostream>
-
-using namespace std;
+using std::string;
+using std::cout;
 
 Potion::Potion(string n, string desc, double w, string r, int val, string type):Item(n,desc,w,r),effectValue(val),effectType(type){}
 

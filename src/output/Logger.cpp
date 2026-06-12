@@ -4,8 +4,9 @@
 
 #include "output/Logger.h"
 #include <stdexcept>
-
-using namespace std;
+using std::string;
+using std::to_string;
+using std::runtime_error;
 
 Logger::Logger(const string& outputPath) : turn(1) {
     file.open(outputPath);

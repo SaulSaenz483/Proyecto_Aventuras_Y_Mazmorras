@@ -10,8 +10,6 @@
 #include<iostream>
 #include <deque>
 
-
-
 class Logger {
 private:
     std::ofstream      file;
@@ -23,7 +21,7 @@ public:
     explicit Logger(const std::string& outputPath);
     ~Logger();
 
-    // No copies — handles an open file
+    // No copies - handles an open file
     Logger(const Logger&)            = delete;
     Logger& operator=(const Logger&) = delete;
 

@@ -5,8 +5,8 @@
 #include "domain/Hero.h"
 #include <algorithm>
 #include <iostream>
-
-using namespace std;
+using std::cout;
+using std::string;
 
 Hero::Hero(string n, int health, int attack)
     : Entity(n), hp(health), maxHp(health), baseAttack(attack), weaponBonus(0) {}

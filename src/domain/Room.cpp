@@ -6,9 +6,7 @@
 #include "domain/Enemy.h"
 #include "domain/Item.h"
 #include <algorithm>
-
-using namespace std;
-
+using std::string;
 
 
 

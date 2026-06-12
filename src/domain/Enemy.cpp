@@ -5,7 +5,8 @@
 #include "domain/Enemy.h"
 #include <iostream>
 
-using namespace std;
+using std::cout;
+using std::string;
 
 Enemy::Enemy(string n, string type, int health, int dam):Entity(n),enemyType(type),hp(health),maxHp(health),damage(dam){}
 

@@ -7,8 +7,10 @@
 #include <iostream>
 #include <limits>
 #include <cstdlib>
-
-using namespace std;
+using std::string;
+using  std::cout;
+using std::to_string;
+using std::cin;
 
 // ---------------------- helpers ----------------------
 
@@ -131,7 +133,7 @@ CombatResult CombatSystem::useItem() {
 
             // The enemy will counterattack this turn anyway
             if (enemyTurn()) return CombatResult::HERO_DIED;
-            return CombatResult::CONTINUE; // combate sigue
+            return CombatResult::CONTINUE; // battle continues
         }
     }
 
@@ -146,7 +148,7 @@ CombatResult CombatSystem::useItem() {
 // ---------------------- flee ----------------------
 
 CombatResult CombatSystem::flee() {
-    // Huir tiene costo: el enemigo da un golpe de salida
+    // Running away comes at a cost: the enemy strikes first
     logger.log(hero.getName() + " tries to run away...");
     if (enemyTurn()) return CombatResult::HERO_DIED;
 

@@ -11,8 +11,15 @@
 #include <limits>
 #include <cstdlib>
 #include <string>
-
-using namespace std;
+using std::cout;
+using std::endl;
+using std::string;
+using std::to_string;
+using std::vector;
+using std::size_t;
+using std::numeric_limits;
+using std::streamsize;
+using std::cin;
 
 // ---------------------- helpers ----------------------
 
