@@ -6,10 +6,8 @@
 #include "simulation/CombatSystem.h"
 #include "domain/NPC.h"
 #include "domain/Weapon.h"
-#include "domain/Potion.h"
 #include <iostream>
 #include <limits>
-#include <cstdlib>
 #include <string>
 using std::cout;
 using std::endl;

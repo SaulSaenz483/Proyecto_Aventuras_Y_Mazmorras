@@ -18,8 +18,6 @@
 #include "domain/Enemy.h"
 #include "output/Logger.h"
 
-
-
 enum class GameResult {
     VICTORY,
     DEFEAT

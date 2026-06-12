@@ -9,8 +9,6 @@
 #include "domain/Enemy.h"
 #include "output/Logger.h"
 
-
-
 // Possible outcome upon exiting combat
 enum class CombatResult {
     HERO_WON,   // the enemy died

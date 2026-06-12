@@ -7,7 +7,6 @@
 
 
 #include"domain/Entity.h"
-#include <iostream>
 #include<string>
 
 class Hero;
