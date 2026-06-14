@@ -26,3 +26,8 @@ add_executable(Proyecto_Aventuras_Y_Mazmorras main.cpp ${SOURCES}
         src/simulation/SimulationEngine.cpp
         include/output/ReportGenerator.h
         src/output/ReportGenerator.cpp)
+
+
+
+
+file(COPY data DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
